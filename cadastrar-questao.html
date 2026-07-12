@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="view-transition" content="same-origin">
+    <title>Extude - Criar Questão</title>
+
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="/css/estilo-global.css">
+</head>
+
+<body class="layout-app">
+
+    <div id="toast-notification" class="toast hidden">
+        <i id="toast-icon" class="ph"></i>
+        <span id="toast-message"></span>
+    </div>
+
+    <div class="app-container">
+
+        <header class="header-central has-actions">
+            <a href="javascript:history.back()" class="btn-square-action"><i class="ph ph-caret-left"></i></a>
+            <h1 class="logo logo-sm"><span class="ex">EX</span><span class="tude">TUDE</span></h1>
+            <button type="reset" form="form-criar-questao" class="btn-square-action" onclick="resetarFormulario()">
+                <i class="ph ph-arrow-counter-clockwise"></i>
+            </button>
+        </header>
+
+        <div class="user-info" style="margin-top: 1.5rem;">
+            <h2 class="user-name">Nova Questão</h2>
+            <p class="user-email">Preencha todos os dados. A resolução é obrigatória.</p>
+        </div>
+
+        <form id="form-criar-questao" onsubmit="criarQuestao(event)">
+
+            <h3 class="menu-section-title">Classificação</h3>
+            <div class="input-group-card">
+
+                <div class="accordion-item" id="acc-disciplina">
+                    <div class="accordion-header" onclick="toggleAccordion('acc-disciplina')">
+                        <div class="header-left">
+                            <i class="ph ph-books"></i>
+                            <span id="selected-disciplina">Selecione a disciplina</span>
+                        </div>
+                        <i class="ph ph-caret-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <ul>
+                            <li onclick="selecionarItem('disciplina', 'Português')">Português</li>
+                            <li onclick="selecionarItem('disciplina', 'Matemática')">Matemática</li>
+                            <li onclick="selecionarItem('disciplina', 'História')">História</li>
+                            <li onclick="selecionarItem('disciplina', 'Geografia')">Geografia</li>
+                            <li onclick="selecionarItem('disciplina', 'Inglês')">Inglês</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="accordion-item" id="acc-assunto">
+                    <div class="accordion-header" onclick="toggleAccordion('acc-assunto')">
+                        <div class="header-left">
+                            <i class="ph ph-bookmark-simple"></i>
+                            <span id="selected-assunto">Selecione o assunto</span>
+                        </div>
+                        <i class="ph ph-caret-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <ul id="lista-assuntos">
+                            <li style="color: #666; cursor: default;">Selecione uma disciplina primeiro</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="accordion-item" id="acc-resposta">
+                    <div class="accordion-header" onclick="toggleAccordion('acc-resposta')">
+                        <div class="header-left">
+                            <i class="ph ph-check-circle"></i>
+                            <span id="selected-resposta">Resposta Correta</span>
+                        </div>
+                        <i class="ph ph-caret-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <ul>
+                            <li onclick="selecionarItem('resposta', 'A')">Alternativa A</li>
+                            <li onclick="selecionarItem('resposta', 'B')">Alternativa B</li>
+                            <li onclick="selecionarItem('resposta', 'C')">Alternativa C</li>
+                            <li onclick="selecionarItem('resposta', 'D')">Alternativa D</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <input type="hidden" id="disciplina_final" name="disciplina" required>
+                <input type="hidden" id="assunto_final" name="assunto" required>
+                <input type="hidden" id="resposta_final" name="resposta" required>
+            </div>
+
+            <h3 class="menu-section-title">Enunciado</h3>
+            <div class="input-group-card">
+                <div class="field align-top">
+                    <i class="ph ph-text-align-left"></i>
+                    <textarea id="enunciado" placeholder="Digite o enunciado..." style="min-height: 120px;"
+                        required></textarea>
+                </div>
+            </div>
+
+            <h3 class="menu-section-title">Alternativas</h3>
+            <div class="input-group-card">
+                <div class="field align-top">
+                    <i class="ph ph-letter-a"></i>
+                    <textarea id="alt-a" placeholder="Texto da alternativa A..." required></textarea>
+                </div>
+                <div class="field align-top">
+                    <i class="ph ph-letter-b"></i>
+                    <textarea id="alt-b" placeholder="Texto da alternativa B..." required></textarea>
+                </div>
+                <div class="field align-top">
+                    <i class="ph ph-letter-c"></i>
+                    <textarea id="alt-c" placeholder="Texto da alternativa C..." required></textarea>
+                </div>
+                <div class="field align-top">
+                    <i class="ph ph-letter-d"></i>
+                    <textarea id="alt-d" placeholder="Texto da alternativa D..." required></textarea>
+                </div>
+            </div>
+
+            <h3 class="menu-section-title">Resolução</h3>
+            <div class="input-group-card">
+                <div class="field align-top">
+                    <i class="ph ph-lightbulb"></i>
+                    <textarea id="explicacao" placeholder="A explicação da resposta é obrigatória..."
+                        style="min-height: 100px;" required></textarea>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem; margin-bottom: 2rem;">
+                <button type="submit" class="btn-submit" id="btn-salvar">
+                    <i class="ph ph-check"></i>Cadastrar Questão
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+    <script src="/js/script-global.js"></script>
+    <script>
+        const gradeCurricular = {
+            "Português": [
+                "Morfologia (Classes de palavras)",
+                "Sintaxe (Período simples e composto)",
+                "Concordância e Regência (Verbal e Nominal)",
+                "Crase",
+                "Figuras de Linguagem",
+                "Acentuação e Ortografia"
+            ],
+            "Matemática": [
+                "Funções (1º e 2º graus, Logarítmica e Exponencial)",
+                "Geometria Espacial (Prismas, Cilindros e Cones)",
+                "Geometria Plana (Áreas e Triângulos)",
+                "Análise Combinatória e Probabilidade",
+                "Progressões (PA e PG)",
+                "Trigonometria (Círculo trigonométrico e Relações)"
+            ],
+            "História": [
+                "Segundo Reinado (Economia, Guerras e Crise)",
+                "Era Vargas (Estado Novo e Trabalhismo)",
+                "Brasil Colônia (Economia e Expansão Territorial)",
+                "República Velha (Coronelismo e Revoltas)",
+                "Regime Militar"
+            ],
+            "Geografia": [
+                "Climas e Domínios Morfoclimáticos",
+                "Dinâmica Populacional e Migrações",
+                "Espaço Agrário (Modernização e Fronteira Agrícola)",
+                "Industrialização e Fontes de Energia",
+                "Urbanização e Problemas Ambientais"
+            ],
+            "Inglês": [
+                "Interpretação de Textos",
+                "Tempos Verbais (Present, Past e Future)",
+                "Pronomes (Pessoais e Possessivos)",
+                "Conjunções e Advérbios"
+            ]
+        };
+
+        function toggleAccordion(id) {
+            const item = document.getElementById(id);
+            const isActive = item.classList.contains('active');
+
+            // Fecha todos os acordeões
+            document.querySelectorAll('.accordion-item').forEach(acc => acc.classList.remove('active'));
+
+            // Abre apenas se não estava ativo
+            if (!isActive) item.classList.add('active');
+        }
+
+        function selecionarItem(tipo, valor) {
+            if (tipo === 'disciplina') {
+                document.getElementById('selected-disciplina').innerText = valor;
+                document.getElementById('disciplina_final').value = valor;
+
+                // Reseta o assunto ao mudar a disciplina
+                document.getElementById('selected-assunto').innerText = "Selecione o assunto";
+                document.getElementById('assunto_final').value = "";
+
+                atualizarAssuntosHTML(valor);
+                toggleAccordion('acc-disciplina'); // Apenas fecha o atual
+            }
+            else if (tipo === 'assunto') {
+                document.getElementById('selected-assunto').innerText = valor;
+                document.getElementById('assunto_final').value = valor;
+                toggleAccordion('acc-assunto'); // Apenas fecha o atual
+            }
+            else if (tipo === 'resposta') {
+                document.getElementById('selected-resposta').innerText = "Alternativa " + valor;
+                document.getElementById('resposta_final').value = valor;
+                toggleAccordion('acc-resposta'); // Apenas fecha o atual
+            }
+        }
+
+        function atualizarAssuntosHTML(disciplina) {
+            const lista = document.getElementById('lista-assuntos');
+            lista.innerHTML = "";
+
+            if (gradeCurricular[disciplina]) {
+                gradeCurricular[disciplina].forEach(assunto => {
+                    const li = document.createElement('li');
+                    li.innerText = assunto;
+                    li.onclick = () => selecionarItem('assunto', assunto);
+                    lista.appendChild(li);
+                });
+            }
+        }
+
+        function resetarFormulario() {
+            document.getElementById('selected-disciplina').innerText = "Selecione a disciplina";
+            document.getElementById('selected-assunto').innerText = "Selecione o assunto";
+            document.getElementById('selected-resposta').innerText = "Resposta Correta";
+
+            document.getElementById('disciplina_final').value = "";
+            document.getElementById('assunto_final').value = "";
+            document.getElementById('resposta_final').value = "";
+
+            document.getElementById('lista-assuntos').innerHTML = '<li style="color: #666; cursor: default;">Selecione uma disciplina primeiro</li>';
+            document.querySelectorAll('.accordion-item').forEach(acc => acc.classList.remove('active'));
+        }
+
+        // --- NOVA FUNÇÃO COM INTEGRAÇÃO AO BACKEND ---
+        async function criarQuestao(event) {
+            event.preventDefault();
+
+            // Validação dos campos de acordeão
+            const disciplina = document.getElementById('disciplina_final').value;
+            const assunto = document.getElementById('assunto_final').value;
+            const resposta = document.getElementById('resposta_final').value;
+
+            if (!disciplina || !assunto || !resposta) {
+                alert("Por favor, preencha toda a classificação (Disciplina, Assunto e Resposta).");
+                return;
+            }
+
+            // 1. Extraindo os dados do formulário
+            const enunciado = document.getElementById('enunciado').value;
+            const alternativa_a = document.getElementById('alt-a').value;
+            const alternativa_b = document.getElementById('alt-b').value;
+            const alternativa_c = document.getElementById('alt-c').value;
+            const alternativa_d = document.getElementById('alt-d').value;
+            const explicacao = document.getElementById('explicacao').value;
+
+            // 2. Montando o Payload (Tem que ser idêntico ao Schema QuestaoCreate do Python)
+            const payload = {
+                disciplina: disciplina,
+                assunto: assunto,
+                enunciado: enunciado,
+                resposta: resposta,
+                alternativa_a: alternativa_a,
+                alternativa_b: alternativa_b,
+                alternativa_c: alternativa_c,
+                alternativa_d: alternativa_d,
+                explicacao: explicacao
+            };
+
+            // 3. Pegando o token de autenticação (mude a chave 'token' caso use outro nome no seu login)
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert("Sessão expirada ou não autenticada. Faça login novamente.");
+                window.location.href = "/login.html"; // Redireciona caso não haja token
+                return;
+            }
+
+            const btnSubmit = document.getElementById('btn-salvar');
+            const textoOriginal = btnSubmit.innerHTML;
+
+            try {
+                // UI: Mostra pro usuário que está carregando
+                btnSubmit.innerHTML = '<i class="ph ph-spinner ph-spin"></i> Cadastrando...';
+                btnSubmit.disabled = true;
+
+                // 4. Fazendo a requisição para a API
+                const response = await fetch('/admin/cadastrar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}` // Injeta o token de Admin
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    // Sucesso (Status 2xx)
+                    if (typeof mostrarAlerta === "function") {
+                        mostrarAlerta("Questão cadastrada com sucesso!", "success");
+                    } else {
+                        alert("Questão cadastrada com sucesso!");
+                    }
+
+                    document.getElementById('form-criar-questao').reset();
+                    resetarFormulario();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    // Erro (Status 4xx ou 5xx)
+                    const errorData = await response.json();
+                    alert(`Erro ao cadastrar: ${errorData.detail || 'Verifique os dados enviados.'}`);
+                }
+            } catch (error) {
+                console.error("Erro na requisição:", error);
+                alert("Erro de conexão. Verifique se o servidor FastAPI (porta 8000) está rodando.");
+            } finally {
+                // Devolve o estado normal do botão
+                btnSubmit.innerHTML = textoOriginal;
+                btnSubmit.disabled = false;
+            }
+        }
+    </script>
+</body>
+
+</html>

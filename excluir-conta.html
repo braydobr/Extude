@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="view-transition" content="same-origin">
+    <title>Extude - Excluir Conta</title>
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="/css/estilo-global.css">
+
+    <script>
+        if (!localStorage.getItem('token')) {
+            window.location.href = "login.html"; 
+        }
+    </script>
+</head>
+
+<body class="layout-app">
+
+    <div id="toast-notification" class="toast hidden">
+        <i id="toast-icon" class="ph"></i>
+        <span id="toast-message"></span>
+    </div>
+
+    <div class="app-container">
+
+        <header class="header-com-voltar">
+            <a href="perfil.html" class="btn-voltar"><i class="ph ph-caret-left"></i></a>
+            <h2 class="titulo-pagina">Excluir Conta</h2>
+        </header>
+
+        <div style="background-color: rgba(255, 85, 85, 0.08); border: 1px solid rgba(255, 85, 85, 0.3); border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem; text-align: center;">
+            <i class="ph ph-warning-circle" style="font-size: 3.5rem; color: #ff5555; margin-bottom: 0.5rem; display: block;"></i>
+            <h3 style="color: #ff5555; font-size: 1.2rem; font-weight: 500; margin-bottom: 0.5rem;">Ação Irreversível!</h3>
+            <p style="color: #d1d1d1; font-size: 0.95rem; line-height: 1.5;">
+                Ao excluir sua conta, todo o seu histórico, estatísticas de desempenho e dados de acesso serão apagados <strong>permanentemente</strong>.
+            </p>
+        </div>
+
+        <form id="form-excluir-conta">
+            
+            <p style="color: #a0a0a0; font-size: 0.9rem; margin-bottom: 0.8rem; text-align: center;">
+                Para confirmar a exclusão, digite sua senha atual:
+            </p>
+
+            <div class="input-group-card">
+                <div class="field">
+                    <i class="ph ph-lock-key"></i>
+                    <label>Sua Senha</label>
+                    <input type="password" id="senha-confirmacao" placeholder="Confirme sua senha" required>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem;">
+                <button type="submit" class="logout-btn" id="btn-submit-excluir">
+                    <i class="ph ph-trash"></i> Excluir Minha Conta
+                </button>
+            </div>
+        </form>
+
+    </div>
+
+    <script src="/js/script-global.js?v=3"></script>
+    <script src="/js/excluir-conta.js?v=1"></script>
+</body>
+
+</html>

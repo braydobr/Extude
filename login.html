@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="view-transition" content="same-origin">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
+    <meta property="og:url" content="{{ request.base_url }}">
+    <meta property="og:image" content="{{ request.url_root }}assets/imagem-preview.png">
+    <title>Extude</title>
+    <meta name="theme-color" content="#0f0f0f">
+    <link rel="manifest" href="/assets/manifest.json">
+
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <link rel="stylesheet" href="/css/estilo-global.css">
+</head>
+
+<body class="layout-auth">
+
+    <div class="login-container">
+
+        <header class="header-auth">
+            <h1 class="logo"><span class="ex">EX</span><span class="tude">TUDE</span></h1>
+            <p class="subtitle">Sua porta de entrada rumo<br>ao futuro como sargento</p>
+        </header>
+
+        <form action="#" method="POST" id="form-login">
+
+            <div class="input-group-card">
+                <div class="field">
+                    <i class="ph ph-user"></i>
+                    <input type="text" placeholder="CPF" id="cpf" name="cpf" required autocomplete="off">
+                </div>
+
+                <div class="field">
+                    <i class="ph ph-key"></i>
+                    <input type="password" placeholder="Senha" id="senha" name="senha" required enterkeyhint="go">
+                </div>
+            </div>
+
+            <div class="links-row">
+                <a href="redefinir-senha.html" class="link-padrao">Esqueci minha senha</a>
+            </div>
+
+            <button type="submit" class="btn-submit">Acessar Plataforma</button>
+        </form>
+
+        <div class="create-account">
+            Ainda não tem uma conta? <a href="cadastrar.html">Cadastre-se</a>
+        </div>
+
+    </div>
+
+    <script src="/js/valida-cpf.js"></script>
+    <script src="/js/script-global.js"></script>
+    <script src="/js/login.js"></script>
+
+</body>
+
+</html>

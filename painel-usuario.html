@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="view-transition" content="same-origin">
+    <title>Extude - Meu Painel</title>
+
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="/css/estilo-global.css">
+
+    <script>
+        // Proteção de rota via token
+        if (!localStorage.getItem('token')) {
+            window.location.href = "login.html";
+        }
+    </script>
+</head>
+
+<body class="layout-app" style="padding-bottom: 2rem;">
+
+    <div class="app-container">
+
+        <header class="header-central">
+            <h1 class="logo logo-sm"><span class="ex">EX</span><span class="tude">TUDE</span></h1>
+        </header>
+
+        <div id="alertas-dinamicos" class="card" style="display: none;">
+            <div class="card-body">
+                <h3 class="card-title"><i class="fas fa-bell"></i> Lembrete Importante</h3>
+                <p id="texto-alerta-esa" class="card-text fw-bold text-primary" style="font-size: 1.2rem;"></p>
+            </div>
+        </div>
+
+        <h3 class="menu-section-title">Atalhos</h3>
+        <div class="profile-menu">
+            <a href="questoes.html" class="menu-item">
+                <div class="menu-item-left">
+                    <i class="ph ph-rocket-launch"></i>
+                    <span style="font-weight: 500;">Começar a Treinar</span>
+                </div>
+                <div class="menu-item-right"><i class="ph ph-caret-right"></i></div>
+            </a>
+            <a href="perfil.html" class="menu-item">
+                <div class="menu-item-left">
+                    <i class="ph ph-user"></i>
+                    <span>Meu Perfil</span>
+                </div>
+                <div class="menu-item-right"><i class="ph ph-caret-right"></i></div>
+            </a>
+        </div>
+
+        <div class="card">
+            <h3 class="card-title">Volume total de Respostas</h3>
+
+            <div class="stats-numbers">
+                <div class="stat-col">
+                    <span id="stat-acertos" class="stat-num">0</span>
+                    <span class="stat-lbl">Corretas</span>
+                </div>
+
+                <div class="stat-col center">
+                    <span id="stat-total" class="stat-num">0</span>
+                    <span class="stat-lbl">Realizadas</span>
+                </div>
+
+                <div class="stat-col right">
+                    <span id="stat-erros" class="stat-num">0</span>
+                    <span class="stat-lbl">Erradas</span>
+                </div>
+            </div>
+
+            <div class="progress-bar-wrapper"
+                style="display: flex; height: 8px; border-radius: 4px; overflow: hidden; margin-top: 1.5rem;">
+                <div id="bar-correct"
+                    style="height: 100%; background-color: #237e4c; width: 0%; transition: width 1.5s ease; border-radius: 16px;">
+                </div>
+                <div id="bar-wrong"
+                    style="height: 100%; background-color: #363636; width: 0%; transition: width 1.5s ease; border-radius: 16px;">
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title">Desempenho Geral</div>
+        <div class="card">
+            <div class="accuracy-content">
+                <svg viewBox="0 0 36 36" class="circular-chart">
+                    <path class="circle-bg"
+                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    <path id="circle-path" class="circle"
+                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                        style="stroke-dasharray: 0, 100; transition: stroke-dasharray 1.5s ease-out; animation: none !important;" />
+                    <text id="circle-percentage" x="18" y="20.35" class="percentage">0%</text>
+                </svg>
+
+                <div id="texto-desempenho" class="accuracy-text">
+                    Carregando suas estatísticas...
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title">Aproveitamento por Disciplina</div>
+        <div class="card">
+
+            <div style="margin-bottom: 1.2rem;">
+                <div class="stats-numbers" style="margin-bottom: 0.4rem;">
+                    <span class="stat-lbl" style="color: #fff;">Língua Portuguesa</span>
+                    <span id="txt-prog-portugues" class="stat-lbl">0% concluído</span>
+                </div>
+                <div class="progress-bar-wrapper"
+                    style="height: 8px; border-radius: 4px; overflow: hidden; background-color: #2a2a2a;">
+                    <div id="bar-prog-portugues"
+                        style="width: 0%; height: 100%; background-color: #237e4c; transition: width 1.5s ease; border-radius: 16px;">
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 1.2rem;">
+                <div class="stats-numbers" style="margin-bottom: 0.4rem;">
+                    <span class="stat-lbl" style="color: #fff;">Matemática</span>
+                    <span id="txt-prog-matematica" class="stat-lbl">0% concluído</span>
+                </div>
+                <div class="progress-bar-wrapper"
+                    style="height: 8px; border-radius: 4px; overflow: hidden; background-color: #2a2a2a;">
+                    <div id="bar-prog-matematica"
+                        style="width: 0%; height: 100%; background-color: #237e4c; transition: width 1.5s ease; border-radius: 16px;">
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 1.2rem;">
+                <div class="stats-numbers" style="margin-bottom: 0.4rem;">
+                    <span class="stat-lbl" style="color: #fff;">História do Brasil</span>
+                    <span id="txt-prog-historia" class="stat-lbl">0% concluído</span>
+                </div>
+                <div class="progress-bar-wrapper"
+                    style="height: 8px; border-radius: 4px; overflow: hidden; background-color: #2a2a2a;">
+                    <div id="bar-prog-historia"
+                        style="width: 0%; height: 100%; background-color: #237e4c; transition: width 1.5s ease; border-radius: 16px;">
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 1.2rem;">
+                <div class="stats-numbers" style="margin-bottom: 0.4rem;">
+                    <span class="stat-lbl" style="color: #fff;">Geografia do Brasil</span>
+                    <span id="txt-prog-geografia" class="stat-lbl">0% concluído</span>
+                </div>
+                <div class="progress-bar-wrapper"
+                    style="height: 8px; border-radius: 4px; overflow: hidden; background-color: #2a2a2a;">
+                    <div id="bar-prog-geografia"
+                        style="width: 0%; height: 100%; background-color: #237e4c; transition: width 1.5s ease; border-radius: 16px;">
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="stats-numbers" style="margin-bottom: 0.4rem;">
+                    <span class="stat-lbl" style="color: #fff;">Língua Inglesa</span>
+                    <span id="txt-prog-ingles" class="stat-lbl">0% concluído</span>
+                </div>
+                <div class="progress-bar-wrapper"
+                    style="height: 8px; border-radius: 4px; overflow: hidden; background-color: #2a2a2a;">
+                    <div id="bar-prog-ingles"
+                        style="width: 0%; height: 100%; background-color: #237e4c; transition: width 1.5s ease; border-radius: 16px;">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="/js/script-global.js?v=2"></script>
+    <script src="/js/painel-usuario.js?v=1"></script>
+</body>
+
+</html>

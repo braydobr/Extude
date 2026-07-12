@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="view-transition" content="same-origin">
+    <title>Extude - Quiz</title>
+
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="/css/estilo-global.css">
+
+    <script>
+        if (!localStorage.getItem('token')) window.location.href = "login.html";
+    </script>
+
+    <style>
+        /* Design Refinado das Alternativas - Padrão EXTUDE */
+        .option-card {
+            background-color: #1c1c1c; 
+            border: 1px solid #2a2a2a; 
+            border-radius: 16px; 
+            padding: 1rem 1.2rem; 
+            color: #d1d1d1; 
+            cursor: pointer; 
+            transition: all 0.2s ease; 
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .option-card:hover:not(.locked) { 
+            background-color: #252525; 
+        }
+
+        /* Badge elegante para a Letra (A, B, C, D) */
+        .option-letter {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background-color: #242424;
+            color: #a0a0a0;
+            font-weight: 600;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        /* Estado Selecionado */
+        .option-card.selected:not(.locked) { 
+            border-color: #237e4c; 
+            background-color: rgba(35, 126, 76, 0.05); 
+        }
+        .option-card.selected:not(.locked) .option-letter {
+            background-color: #237e4c;
+            color: #ffffff;
+        }
+        
+        /* Estados Pós-Resposta (Suaves) */
+        .option-card.correct { 
+            border-color: #237e4c !important; 
+            background-color: rgba(35, 126, 76, 0.1) !important; 
+        }
+        .option-card.correct .option-letter { 
+            background-color: #237e4c !important; 
+            color: #ffffff !important; 
+        }
+
+        .option-card.wrong { 
+            border-color: #ff5555 !important; 
+            background-color: rgba(255, 85, 85, 0.08) !important; 
+        }
+        .option-card.wrong .option-letter { 
+            background-color: #ff5555 !important; 
+            color: #ffffff !important; 
+        }
+
+        .option-card.locked { cursor: default; }
+        
+        .text-content { flex: 1; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+
+<body class="layout-app" style="padding-bottom: 2rem;">
+
+    <div id="toast-notification" class="toast hidden">
+        <i id="toast-icon" class="ph"></i>
+        <span id="toast-message"></span>
+    </div>
+
+    <div class="app-container">
+
+        <header class="header-central has-actions">
+            <a href="questoes.html" class="btn-square-action"><i class="ph ph-x"></i></a>
+            <h1 class="logo logo-sm"><span class="ex">EX</span><span class="tude">TUDE</span></h1>
+            <div class="btn-square-action" style="visibility: hidden;"></div>
+        </header>
+
+        <div id="loading-area" style="text-align: center; padding: 4rem 1rem; color: #a0a0a0;">
+            <i class="ph ph-spinner ph-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+            <p>Preparando o simulado...</p>
+        </div>
+
+        <div id="quiz-area" style="display: none;">
+            
+            <div class="user-info" style="margin-top: 1rem; margin-bottom: 2rem; padding: 1.5rem; width: 100%;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem; width: 100%;">
+                    <span id="q-contador" style="color: #237e4c; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">Questão 1 / X</span>
+                    <span id="q-disciplina" style="color: #a0a0a0; font-size: 0.75rem; background: #242424; padding: 4px 10px; border-radius: 12px; font-weight: 500;">Disciplina</span>
+                </div>
+                <h2 id="q-assunto" style="font-size: 1.25rem; color: #ffffff; font-weight: 600; margin-bottom: 1rem; margin-top: 0;">Assunto da Questão</h2>
+                
+                <p id="q-enunciado" style="font-size: 1.05rem; line-height: 1.6; color: #d1d1d1; margin: 0;">
+                    Enunciado carrega aqui...
+                </p>
+            </div>
+
+            <div id="options-container" style="margin-bottom: 2rem;">
+            </div>
+
+            <div id="explanation-section" class="card" style="display: none; border: 1px solid #237e4c; padding: 1.2rem; margin-bottom: 2rem; position: relative; overflow: hidden; animation: fadeIn 0.4s ease;">
+                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(35, 126, 76, 0.05); z-index: 0;"></div>
+                <div style="position: relative; z-index: 1;">
+                    <h3 style="font-size: 0.95rem; color: #237e4c; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.4rem; font-weight: 600;">
+                        <i class="ph-fill ph-lightbulb" style="font-size: 1.2rem;"></i> Resolução
+                    </h3>
+                    <p id="q-explicacao" style="font-size: 0.95rem; color: #d1d1d1; line-height: 1.6; margin: 0;"></p>
+                </div>
+            </div>
+
+            <button id="btn-acao" class="btn-submit" onclick="tratarBotaoPrincipal()">
+                Confirmar Resposta
+            </button>
+        </div>
+    </div>
+
+    <script src="/js/script-global.js?v=2"></script>
+    <script src="/js/quiz.js?v=3"></script>
+</body>
+</html>

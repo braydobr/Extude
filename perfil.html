@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="view-transition" content="same-origin">
+    <title>Extude - Meu Perfil</title>
+
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="/css/estilo-global.css">
+
+    <script>
+        // Correção: Agora verifica pelo 'token', padronizando com o resto do sistema
+        if (!localStorage.getItem('token')) {
+            window.location.href = "login.html";
+        }
+    </script>
+</head>
+
+<body class="layout-app">
+
+    <div class="app-container">
+
+        <header class="header-central has-actions">
+            <a href="painel-usuario.html" class="btn-square-action"><i class="ph ph-caret-left"></i></a>
+            <h1 class="logo logo-sm"><span class="ex">EX</span><span class="tude">TUDE</span></h1>
+            <div style="width: 40px;"></div>
+        </header>
+
+        <div class="user-info"
+            style="margin-top: 1.5rem; margin-bottom: 2rem; flex-direction: row; align-items: center; gap: 1.2rem;">
+            <div class="avatar-iniciais avatar-md" id="avatar-perfil">
+                <i class="ph ph-spinner ph-spin"></i>
+            </div>
+
+            <div style="flex: 1; overflow: hidden;">
+                <h2 class="user-name" id="nome-exibicao"
+                    style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 0;"></h2>
+                <p class="user-email" id="email-exibicao"
+                    style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 0.2rem;"></p>
+            </div>
+        </div>
+
+        <h3 class="menu-section-title">Minha Conta</h3>
+        <ul class="profile-menu">
+            <a href="editar-cadastro-usuario.html" class="menu-item">
+                <div class="menu-item-left">
+                    <i class="ph ph-user-gear"></i>
+                    <span>Editar Cadastro</span>
+                </div>
+                <div class="menu-item-right">
+                    <i class="ph ph-caret-right"></i>
+                </div>
+            </a>
+            <a href="alterar-senha.html" class="menu-item">
+                <div class="menu-item-left">
+                    <i class="ph ph-lock-key"></i>
+                    <span>Alterar Senha</span>
+                </div>
+                <div class="menu-item-right">
+                    <i class="ph ph-caret-right"></i>
+                </div>
+            </a>
+            <a href="excluir-conta.html" class="menu-item">
+                <div class="menu-item-left">
+                    <i class="ph ph-trash"></i>
+                    <span>Excluir Conta</span>
+                </div>
+                <div class="menu-item-right">
+                    <i class="ph ph-caret-right"></i>
+                </div>
+            </a>
+        </ul>
+
+        <h3 class="menu-section-title">Sistema</h3>
+        <ul class="profile-menu">
+            <a href="painel-admin.html" class="menu-item" id="link-admin" style="display: none;">
+                <div class="menu-item-left">
+                    <i class="ph ph-shield-check"></i>
+                    <span>Painel Administrativo</span>
+                </div>
+                <div class="menu-item-right">
+                    <i class="ph ph-caret-right"></i>
+                </div>
+            </a>
+            <a href="termos-de-uso.html" class="menu-item">
+                <div class="menu-item-left">
+                    <i class="ph ph-file-text"></i>
+                    <span>Termos de Uso</span>
+                </div>
+                <div class="menu-item-right">
+                    <i class="ph ph-caret-right"></i>
+                </div>
+            </a>
+        </ul>
+
+        <button class="logout-btn" id="btn-sair" style="margin-top: 1rem; margin-bottom: 2rem;">
+            <i class="ph ph-sign-out"></i>
+            Sair da Conta
+        </button>
+
+    </div>
+
+    <script src="/js/script-global.js?v=2"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('token');
+            const nivelAcesso = localStorage.getItem('nivelAcesso');
+
+            // 1. Lógica para exibir o Painel Admin
+            const linkAdmin = document.getElementById('link-admin');
+            if (nivelAcesso === '0') {
+                linkAdmin.style.display = 'flex';
+            }
+
+            // 2. Busca os dados fresquinhos do usuário na API
+            try {
+                const resposta = await fetch('/usuarios/perfil', {
+                    method: 'GET',
+                    cache: 'no-store',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'ngrok-skip-browser-warning': 'true' // Correção obrigatória para o mobile!
+                    }
+                });
+
+                if (resposta.ok) {
+                    const dadosPerfil = await resposta.json();
+
+                    // Preenche a tela com os dados
+                    document.getElementById('nome-exibicao').textContent = dadosPerfil.nome;
+                    document.getElementById('email-exibicao').textContent = dadosPerfil.email;
+
+                    // Extrai a inicial e atualiza o Avatar
+                    const inicial = dadosPerfil.nome ? dadosPerfil.nome.charAt(0).toUpperCase() : "U";
+                    document.getElementById('avatar-perfil').innerText = inicial;
+
+                    // Atualiza o cache local por precaução
+                    localStorage.setItem('nomeUsuario', dadosPerfil.nome);
+                    localStorage.setItem('emailUsuario', dadosPerfil.email);
+                } else {
+                    console.warn("Não foi possível buscar os dados de perfil.");
+                    usarDadosLocais();
+                }
+
+            } catch (erro) {
+                console.error("Erro de conexão:", erro);
+                usarDadosLocais();
+            }
+        });
+
+        // Função auxiliar caso a API falhe
+        function usarDadosLocais() {
+            const nomeSalvo = localStorage.getItem('nomeUsuario');
+            const emailSalvo = localStorage.getItem('emailUsuario');
+
+            if (nomeSalvo && nomeSalvo !== 'undefined') {
+                document.getElementById('nome-exibicao').textContent = nomeSalvo;
+                const inicial = nomeSalvo.charAt(0).toUpperCase();
+                document.getElementById('avatar-perfil').innerText = inicial;
+            } else {
+                document.getElementById('avatar-perfil').innerText = "U";
+            }
+
+            if (emailSalvo && emailSalvo !== 'undefined') {
+                document.getElementById('email-exibicao').textContent = emailSalvo;
+            }
+        }
+
+        document.getElementById('btn-sair').addEventListener('click', () => {
+            localStorage.clear();
+            window.location.href = "login.html";
+        });
+    </script>
+</body>
+
+</html>

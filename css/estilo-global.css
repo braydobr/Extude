@@ -1,0 +1,1588 @@
+/* =========================================
+   1. RESET E CONFIGURAÇÕES GERAIS
+   ========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Kanit', sans-serif;
+}
+
+:root {
+    color-scheme: dark;
+}
+
+/* Define a largura da barra */
+::-webkit-scrollbar {
+    width: 6px;
+    /* Linha vertical bem fina */
+    height: 6px;
+    /* Linha horizontal (se houver) */
+}
+
+/* Define o fundo da trilha (background do scroll) */
+::-webkit-scrollbar-track {
+    background: #0f0f0f;
+    /* Mesma cor do fundo do seu sistema */
+}
+
+/* Define o botão arrastável (a barra em si) */
+::-webkit-scrollbar-thumb {
+    background: #2a2a2a;
+    /* Um cinza bem escuro e discreto */
+    border-radius: 10px;
+    /* Deixa as bordas arredondadas */
+}
+
+/* Efeito de hover ao passar o mouse */
+::-webkit-scrollbar-thumb:hover {
+    background: #237e4c;
+    /* Opcional: destaca com o verde do EXTUDE ao focar */
+}
+
+body {
+    background-color: #101010;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    touch-action: manipulation;
+}
+
+/* Modificadores de Layout do Body */
+body.layout-auth {
+    align-items: center;
+    background-color: #101010;
+    padding: 0;
+}
+
+body.layout-app {
+    display: block;
+    padding-top: 1rem;
+    padding-bottom: 120px;
+    /* Espaço global para a Bottom Nav */
+}
+
+body.edicao-layout {
+    display: block;
+    padding-bottom: 100px;
+    /* Espaço para o botão de salvar fixo no rodapé */
+}
+
+/* =========================================
+   2. CONTAINERS PRINCIPAIS
+   ========================================= */
+.app-container {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem;
+    /* Padding unificado aqui */
+}
+
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    position: relative;
+}
+
+.terms-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    padding: 3rem 61.5rem;
+    /* Espaçamento menor para celular */
+}
+
+/* =========================================
+   3. CABEÇALHO E TIPOGRAFIA (HEADER/LOGO)
+   ========================================= */
+/* Header para páginas de Login/Cadastro */
+.header-auth {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+/* Header centralizado para Painel/Perfil */
+.header-central {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+    margin-top: 0.5rem;
+    position: relative;
+}
+
+/* Modificador para o header que contém ações nas duas extremidades */
+.header-central.has-actions {
+    justify-content: space-between;
+    padding: 0 0.5rem;
+}
+
+/* Estilo unificado para botões quadrados no header */
+.btn-square-action {
+    color: #9e9e9e;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    background: #1c1c1c;
+    border: 1px solid #2a2a2a;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.btn-square-action:hover {
+    background: #242424;
+    color: #ffffff;
+}
+
+.header-central.has-actions .btn-square-action {
+    position: static;
+}
+
+/* Header com botão de voltar na lateral */
+.header-com-voltar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Mantém apenas o título perfeitamente centralizado */
+    position: relative;
+    margin-bottom: 2rem;
+    margin-top: 1.5rem;
+    min-height: 40px;
+    /* Garante a altura do botão de voltar */
+    width: 100%;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Desktop Adjustment */
+@media (min-width: 768px) {
+
+    .app-container,
+    .login-container {
+        padding-top: 6rem;
+        /* Mantém a proporção do espaço do Toast em telas maiores */
+    }
+}
+
+/* Tipografia Base */
+.logo {
+    font-size: 2.8rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    margin: 0;
+    text-align: center;
+}
+
+.logo-sm {
+    font-size: 1.8rem;
+    /* Versão menor para os cabeçalhos do app */
+}
+
+.logo .ex {
+    color: #1a613a;
+}
+
+/* Verde principal ajustado */
+.logo .tude {
+    color: #e4e4e4;
+}
+
+.subtitle {
+    color: #a0a0a0;
+    font-size: 0.95rem;
+    font-weight: 400;
+    line-height: 1.4;
+    margin-top: 0.5rem;
+}
+
+.page-title {
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-top: 1rem;
+}
+
+.titulo-pagina {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #9e9e9e;
+    margin: 0;
+}
+
+/* =========================================
+   4. FORMULÁRIOS E INPUTS (MODERNOS)
+   ========================================= */
+/* Modelo novo em blocos (Usado no Login e Edição de Perfil) */
+.input-group-card {
+    background-color: #1c1c1c;
+    border: 1px solid #2a2a2a;
+    border-radius: 16px;
+    padding: 0 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Estilização para Selects e Textareas dentro de .field */
+.input-group-card .field .select-clean,
+.input-group-card .field textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-family: 'Kanit', sans-serif;
+    outline: none;
+    resize: none;
+    /* Impede o usuário de redimensionar manualmente */
+}
+
+.field {
+    padding: 1.2rem 0;
+    border-bottom: 1px solid #2a2a2a;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.field:last-child {
+    border-bottom: none;
+}
+
+.field i {
+    color: #7a7a7a;
+    font-size: 1.4rem;
+}
+
+.field label {
+    display: block;
+    font-size: 0.85rem;
+    color: #a0a0a0;
+    margin-bottom: 0.3rem;
+    width: 120px;
+    /* Largura fixa para rótulos laterais */
+    flex-shrink: 0;
+}
+
+.field input {
+    width: 100%;
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-family: 'Kanit', sans-serif;
+    outline: none;
+}
+
+.field input::placeholder {
+    color: #555;
+}
+
+/* Alinhamento superior para campos de texto longo (Enunciado/Resolução) */
+.field.align-top {
+    align-items: flex-start;
+    padding-top: 1.2rem;
+}
+
+.field.align-top i {
+    margin-top: 0.2rem;
+}
+
+/* Modelo Clássico (Usado na Recuperação de Senha) */
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    background-color: #242424;
+    border-radius: 8px;
+    padding: 0 1.2rem;
+    height: 56px;
+    transition: border 0.3s ease;
+}
+
+.input-wrapper:focus-within {
+    outline: 1px solid #237e4c;
+}
+
+.input-wrapper i {
+    color: #9e9e9e;
+    font-size: 1.3rem;
+    margin-right: 1rem;
+}
+
+.input-wrapper input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #ffffff;
+    width: 100%;
+    font-size: 1rem;
+}
+
+/* =========================================
+   5. BOTÕES GERAIS
+   ========================================= */
+.btn-submit {
+    width: 100%;
+    background-color: rgba(35, 126, 76, 0.08);
+    border: 1px solid rgba(35, 126, 76, 0.3);
+    color: #237e4c;
+    border-radius: 14px;
+    padding: 1.1rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    margin-top: 2rem;
+}
+
+.btn-submit:hover {
+    background-color: rgba(35, 126, 76, 0.15);
+    border-color: rgba(35, 126, 76, 0.6);
+    transform: translateY(-2px);
+}
+
+.btn-submit:active {
+    transform: translateY(0);
+}
+
+.btn-salvar {
+    width: 100%;
+    max-width: 448px;
+    background-color: rgba(24, 90, 54, 0.25);
+    color: #237e4c;
+    border: 1px solid rgba(24, 90, 54, 0.7);
+    border-radius: 14px;
+    padding: 1.1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0;
+}
+
+.btn-salvar:hover {
+    background-color: rgba(24, 90, 54, 0.4);
+    border-color: rgba(24, 90, 54, 1);
+    transform: translateY(-2px);
+}
+
+.btn-salvar:active {
+    transform: translateY(0);
+}
+
+.btn-voltar {
+    color: #9e9e9e;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    background: #1c1c1c;
+    border: 1px solid #2a2a2a;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    transition: background 0.2s;
+    position: absolute;
+    left: 1rem;
+    margin: 0;
+    /* Reseta qualquer margem que possa interferir */
+}
+
+.btn-voltar:hover {
+    background: #242424;
+}
+
+/* Botão de Sair/Logout */
+.logout-btn {
+    width: 100%;
+    max-width: 448px;
+    background-color: rgba(255, 85, 85, 0.08);
+    color: #ff5555;
+    border: 1px solid rgba(255, 85, 85, 0.3);
+    border-radius: 14px;
+    padding: 1.1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.logout-btn:hover {
+    background-color: rgba(255, 85, 85, 0.15);
+    border-color: rgba(255, 85, 85, 0.6);
+    transform: translateY(-2px);
+}
+
+.logout-btn:active {
+    transform: translateY(0);
+}
+
+/* =========================================
+   6. LINKS DE APOIO (ESQUECI A SENHA, CRIAR CONTA)
+   ========================================= */
+.links-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 2rem;
+    padding: 0 0.5rem;
+}
+
+.link-padrao {
+    color: #9e9e9e;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+.link-padrao:hover {
+    color: #ffffff;
+}
+
+.create-account {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.95rem;
+    color: #a0a0a0;
+}
+
+.create-account a {
+    color: #237e4c;
+    font-weight: 500;
+    text-decoration: none;
+    margin-left: 0.3rem;
+    transition: color 0.2s ease;
+}
+
+.create-account a:hover {
+    color: #2b9e5f;
+}
+
+/* =========================================
+   7. COMPONENTES: NAVEGAÇÃO INFERIOR (MOBILE)
+   ========================================= */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #151515;
+    border-top: 1px solid #2a2a2a;
+    display: flex;
+    justify-content: space-around;
+    padding: 0.8rem 0;
+    z-index: 100;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    color: #a0a0a0;
+    text-decoration: none;
+    font-size: 0.75rem;
+    transition: color 0.3s;
+}
+
+.nav-item i {
+    font-size: 1.5rem;
+}
+
+.nav-item.active {
+    color: #a0a0a0;
+}
+
+.nav-item:hover {
+    color: #ffffff;
+}
+
+/* =========================================
+   8. COMPONENTES DO PAINEL (CARDS E BARRAS)
+   ========================================= */
+.card {
+    background-color: #202020;
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.2rem;
+    border: 1px solid #2a2a2a;
+}
+
+.card-title {
+    text-align: center;
+    font-size: 1rem;
+    color: #ffffff;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+}
+
+/* --- CARD DE CONTAGEM REGRESSIVA --- */
+.countdown-card {
+    text-align: center;
+    padding: 1.2rem;
+}
+
+.countdown-text {
+    color: #d1d1d1;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+/* --- GRÁFICO CIRCULAR DE ACERTOS --- */
+.accuracy-content {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.circular-chart {
+    display: block;
+    width: 80px;
+    max-width: 100%;
+    max-height: 250px;
+}
+
+.circle-bg {
+    fill: none;
+    stroke: #2a2a2a;
+    stroke-width: 3.8;
+}
+
+.circle {
+    fill: none;
+    stroke-width: 3.8;
+    stroke-linecap: round;
+    stroke: #185a36;
+    animation: progress 1s ease-out forwards;
+}
+
+@keyframes progress {
+    0% {
+        stroke-dasharray: 0 100;
+    }
+}
+
+.percentage {
+    fill: #ffffff;
+    font-family: 'Kanit', sans-serif;
+    font-weight: 600;
+    font-size: 0.55em;
+    text-anchor: middle;
+}
+
+/* --- TEXTOS E DESTAQUES --- */
+.accuracy-text,
+.challenge-text {
+    font-size: 0.85rem;
+    color: #a0a0a0;
+    line-height: 1.5;
+    font-weight: 300;
+}
+
+.accuracy-text {
+    flex: 1;
+}
+
+.accuracy-text span,
+.challenge-text span {
+    color: #d1d1d1;
+    text-decoration: underline;
+    text-decoration-color: #555;
+    text-underline-offset: 3px;
+}
+
+/* --- ESTATÍSTICAS E BARRAS DE PROGRESSO --- */
+.stats-numbers {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
+}
+
+.stat-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-col.center {
+    align-items: center;
+}
+
+.stat-col.right {
+    align-items: flex-end;
+}
+
+.stat-num {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.stat-lbl {
+    font-size: 0.7rem;
+    color: #a0a0a0;
+}
+
+.progress-bar-wrapper {
+    display: flex;
+    height: 8px;
+    width: 100%;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: #2a2a2a;
+}
+
+.bar-correct {
+    height: 100%;
+    background-color: #185a36;
+    width: 72%;
+    border-radius: 4px;
+}
+
+.bar-wrong {
+    height: 100%;
+    background-color: #2a2a2a;
+    width: 28%;
+}
+
+/* =========================================
+   9. TEXTOS DE PÁGINAS GERAIS E TERMOS
+   ========================================= */
+.content {
+    color: #9e9e9e;
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+.content h3 {
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.content p {
+    margin-bottom: 1rem;
+    text-align: justify;
+}
+
+.content ul {
+    list-style-type: none;
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+}
+
+.content ul li {
+    margin-bottom: 0.5rem;
+    text-align: justify;
+}
+
+.terms-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 3rem 3rem;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================================
+   10. ALERTA PERSONALIZADO (TOAST)
+   ========================================= */
+@keyframes slide-in-top {
+    0% {
+        transform: translateX(-50%) translateY(-100px);
+        opacity: 0;
+    }
+
+    70% {
+        transform: translateX(-50%) translateY(10px);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-out-top {
+    0% {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(-50%) translateY(-100px);
+        opacity: 0;
+    }
+}
+
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    opacity: 0;
+    
+    /* 1. Fundo com transparência (mesma cor #1c1c1c, mas com 75% de opacidade) */
+    background-color: rgba(28, 28, 28, 0.75);
+    
+    /* 2. Aplicação do desfoque no fundo */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); /* Para compatibilidade com iOS/Safari */
+    
+    border: 1px solid #2a2a2a;
+    color: #ffffff;
+    padding: 1rem 1.5rem;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    z-index: 9999;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    width: 90%;
+    max-width: 400px;
+    font-size: 0.9rem;
+    pointer-events: none;
+}
+
+.toast.mostrar {
+    animation: slide-in-top 0.4s ease-out forwards;
+    pointer-events: auto;
+}
+
+.toast.esconder {
+    animation: slide-out-top 0.4s ease-in forwards;
+    pointer-events: none;
+}
+
+.toast.success i {
+    color: #237e4c;
+    font-size: 1.5rem;
+}
+
+.toast.error i {
+    color: #e74c3c;
+    font-size: 1.5rem;
+}
+
+/* =========================================
+   11. CLASSES UTILITÁRIAS E MEDIA QUERIES
+   ========================================= */
+
+/* Desktop Adjustment */
+@media (min-width: 768px) {
+
+    .app-container,
+    .login-container {
+        padding-top: 2.5rem;
+        /* Um respiro elegante para PC, sem exageros */
+    }
+
+    .terms-container {
+        padding: 4rem 5rem;
+        /* Espaçamento maior para telas de PC/Tablet */
+    }
+}
+
+/* =========================================
+   12. CHECKBOX CUSTOMIZADA (TERMOS DE USO)
+   ========================================= */
+.custom-checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #a0a0a0;
+    user-select: none;
+    margin-bottom: 1.5rem;
+    padding: 0 0.5rem;
+}
+
+.custom-checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.custom-checkmark {
+    height: 20px;
+    width: 20px;
+    background-color: transparent;
+    border: 2px solid #3a3a3a;
+    border-radius: 5px;
+    position: relative;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.custom-checkbox-container input:checked~.custom-checkmark {
+    background-color: #1a613a;
+    border-color: #1a613a;
+}
+
+.custom-checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.custom-checkbox-container input:checked~.custom-checkmark:after {
+    display: block;
+}
+
+.custom-checkmark:after {
+    left: 0.32rem;
+    top: 0.01rem;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.custom-checkbox-container a {
+    text-decoration: underline;
+    transition: color 0.2s ease;
+}
+
+.custom-checkbox-container a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* =========================================
+   13. PÁGINA DE QUESTÕES E BOTÕES FLUTUANTES
+   ========================================= */
+
+body.layout-questoes {
+    padding-bottom: 160px;
+}
+
+/* Botão Flutuante (Aleatórias) - Comportamento Padrão */
+.bottom-action-container {
+    position: fixed;
+    bottom: 70px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+    z-index: 90;
+}
+
+/* Ajuste específico para quando estiver na tela de Edição de Cadastro */
+body.edicao-layout .bottom-action-container {
+    bottom: 0;
+    padding: 1rem 1rem 2rem 1rem;
+    /* Usando #101010 para criar o degradê invisível exato do background do body */
+    background: linear-gradient(to top, #101010 70%, transparent);
+}
+
+/* Título com barrinha verde */
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #a0a0a0;
+    margin-bottom: 1.2rem;
+}
+
+.section-title::before {
+    content: '';
+    display: block;
+    width: 3px;
+    height: 14px;
+    background-color: #185a36;
+    border-radius: 4px;
+}
+
+/* Base do Acordeão */
+.accordion-card {
+    padding: 0.5rem 1.5rem;
+}
+
+.accordion-item {
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.accordion-item:last-child {
+    border-bottom: none;
+}
+
+.accordion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 0;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.accordion-header:hover {
+    opacity: 0.8;
+}
+
+.accordion-title {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.accordion-icon {
+    color: #a0a0a0;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+/* Conteúdo do Acordeão */
+.accordion-content {
+    display: none;
+    padding-bottom: 1.2rem;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.accordion-item.active .accordion-content {
+    display: block;
+}
+
+.accordion-item.active .accordion-icon {
+    transform: rotate(180deg);
+}
+
+/*====FORMULÁRIO=====*/
+/* Estilos para Acordeão usado como Seletor de Formulário */
+.accordion-content ul {
+    list-style: none;
+    padding: 0.5rem 0;
+}
+
+.accordion-content ul li {
+    padding: 12px 1rem;
+    border-bottom: 1px solid #252525;
+    cursor: pointer;
+    color: #a0a0a0;
+    transition: all 0.2s;
+}
+
+.accordion-content ul li:last-child {
+    border-bottom: none;
+}
+
+.accordion-content ul li:hover {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    padding-left: 1.5rem;
+    /* Efeito de slide ao passar o rato */
+}
+
+.accordion-content ul li.selected {
+    color: #4CAF50;
+    /* Cor de destaque para o item selecionado */
+    font-weight: 500;
+}
+
+/* Lista de Tópicos */
+.topic-list {
+    list-style: none;
+    padding-left: 0.5rem;
+}
+
+.topic-list li {
+    position: relative;
+    font-size: 0.9rem;
+    color: #d1d1d1;
+    padding: 0.4rem 0 0.4rem 1.2rem;
+    cursor: pointer;
+    font-weight: 300;
+    transition: color 0.2s;
+}
+
+.topic-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #555;
+}
+
+.topic-list li:hover,
+.topic-list li.highlight {
+    color: #ffffff;
+    text-decoration: underline;
+    text-decoration-color: #555;
+    text-underline-offset: 4px;
+}
+
+.btn-random {
+    max-width: 448px;
+    margin: 0;
+    gap: 0.5rem;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================================
+   14. PÁGINA DE PERFIL (INFORMAÇÕES E MENUS)
+   ========================================= */
+
+.user-info {
+    background-color: #1c1c1c;
+    border: 1px solid #2a2a2a;
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.user-name {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 0.2rem;
+    margin-top: 0;
+}
+
+.user-email {
+    font-size: 0.9rem;
+    color: #a0a0a0;
+    font-weight: 300;
+}
+
+.menu-section-title {
+    font-size: 0.85rem;
+    color: #7a7a7a;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+    padding-left: 0.5rem;
+}
+
+.profile-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+    background-color: #1c1c1c;
+    border-radius: 16px;
+    border: 1px solid #2a2a2a;
+    overflow: hidden;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid #2a2a2a;
+    color: #d1d1d1;
+    text-decoration: none;
+    font-weight: 400;
+    transition: background-color 0.2s;
+}
+
+.menu-item:last-child {
+    border-bottom: none;
+}
+
+.menu-item:hover {
+    background-color: #252525;
+    color: #ffffff;
+}
+
+.menu-item-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.menu-item-left i {
+    font-size: 1.2rem;
+    color: #a0a0a0;
+}
+
+.menu-item-right i {
+    font-size: 1rem;
+    color: #555555;
+}
+
+/* =========================================
+   15. ESTILOS ESPECÍFICOS: RECUPERAÇÃO DE SENHA
+   ========================================= */
+
+/* Espaçamento entre os inputs (ex: Nova senha e Confirmar senha) */
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+/* Container dos 4 quadradinhos do código */
+.code-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+}
+
+/* Visual dos quadradinhos de código individualmente */
+.code-input {
+    width: 100%;
+    height: 64px;
+    background-color: #242424;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    color: #ffffff;
+    font-size: 1.8rem;
+    font-weight: 600;
+    text-align: center;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+/* Efeito ao clicar no quadradinho */
+.code-input:focus {
+    border: 1px solid rgba(24, 90, 54, 0.5);
+    background-color: #1c1c1c;
+}
+
+/* Link de reenviar código centralizado e alinhado */
+.resend-link {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+/*=====================================================*/
+/* 16. FILTROS RÁPIDOS (tela de questões)
+/*=====================================================*/
+
+.filter-container {
+    display: flex;
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+    padding: 4px 0 12px 0;
+    scrollbar-width: none;
+}
+
+.filter-container::-webkit-scrollbar {
+    display: none;
+}
+
+.btn-filter {
+    padding: 0.6rem 1.2rem;
+    background-color: #1c1c1c;
+    border: 1px solid #2a2a2a;
+    border-radius: 18px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+.btn-filter.active {
+    border-color: #237e4c;
+    background-color: rgba(24, 90, 54, 0.255);
+    color: #237e4c;
+}
+
+.questao-card {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 1rem;
+    border-bottom: 1px solid #252525;
+    transition: background 0.2s;
+}
+
+.questao-card:hover {
+    background-color: #1a1a1a;
+}
+
+.questao-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/*AVATAR AVATAR =========================*/
+/*=======================================*/
+.avatar-iniciais {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Tamanho Padrão (Usado nas listas de usuários) */
+    width: 42px;
+    height: 42px;
+    font-size: 1rem;
+
+    border-radius: 32%;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+    user-select: none;
+
+    /* Visual inspirado na identidade do App (Dark/Outline) */
+    background-color: rgba(35, 126, 76, 0.15);
+    /* Fundo com uma leve transparência verde */
+    color: #237e4c;
+    /* Verde vibrante igual ao do botão ativo */
+}
+
+.avatar-iniciais.avatar-sm {
+    width: 32px;
+    height: 32px;
+    font-size: 0.8rem;
+}
+
+.avatar-iniciais.avatar-md {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+}
+
+.avatar-iniciais.avatar-lg {
+    width: 84px;
+    height: 84px;
+    font-size: 2.2rem;
+    border-width: 2px;
+}
+
+/* =========================================
+   17. CORREÇÃO DEFINITIVA SELEÇÃO/FLASH MOBILE
+   ========================================= */
+
+/* 1. Remove o flash/borda colorida ao tocar em QUALQUER elemento clicável */
+a,
+button,
+input[type="submit"],
+input[type="button"],
+[role="button"],
+.custom-checkbox-container,
+.option-card {
+    -webkit-tap-highlight-color: transparent !important;
+    outline: none !important;
+}
+
+/* 2. Impede o balão de "copiar/salvar" e o realce azul de seleção de texto */
+.btn-submit,
+.btn-salvar,
+.btn-square-action,
+.btn-voltar,
+.logout-btn,
+.link-padrao,
+.create-account,
+.create-account a,
+.nav-item,
+.accordion-header,
+.btn-filter,
+.questao-card,
+.menu-item,
+.option-card {
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+}
+
+/* =========================================
+   18. TRANSIÇÃO ULTRA-FLUIDA E RÁPIDA (OTIMIZADA)
+   ========================================= */
+
+.login-container,
+.app-container,
+.terms-container {
+    /* 1. Reduzido para 0.22s: a transição fica quase instantânea, mas ainda suave */
+    animation: entrarComoAppRapido 0.22s cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
+
+    /* 2. Força o uso da placa de vídeo (GPU) do telemóvel de forma leve */
+    backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+}
+
+@keyframes entrarComoAppRapido {
+    from {
+        opacity: 0;
+        /* 3. Reduzido para apenas 8px: exige muito menos processamento do ecrã */
+        transform: translate3d(0, 8px, 0);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+/* =========================================
+   19. MODAL CUSTOMIZADO (ALERTA E CONFIRMAÇÃO)
+   ========================================= */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Fundo mais transparente para destacar o desfoque */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Desfoque universal (O -webkit- garante compatibilidade mobile) */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    animation: fadeInModal 0.2s ease-out forwards;
+}
+
+.custom-modal {
+    /* 1. Fundo com transparência (mesma cor #1c1c1c, mas com 80% de opacidade para manter boa leitura) */
+    background-color: rgba(28, 28, 28, 0.80);
+    
+    /* 2. Aplicação do desfoque atrás do modal */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    
+    border: 1px solid #2a2a2a;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 380px;
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+    animation: slideUpModal 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.custom-modal-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.custom-modal-title {
+    color: #ffffff;
+    margin: 0.5rem 0 0 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.custom-modal-body {
+    color: #a0a0a0;
+    font-size: 0.95rem;
+    margin: 1rem 0 1.5rem 0;
+    line-height: 1.5;
+    text-align: center;
+}
+
+/* =======================================================
+   Botões do Modal (Estilo Nativo do Sistema)
+======================================================= */
+.custom-modal-footer {
+    display: flex;
+    gap: 0.8rem;
+    width: 100%;
+}
+
+.btn-modal-cancel {
+    flex: 1;
+    padding: 0.8rem;
+    border-radius: 12px;
+    background-color: transparent;
+    color: #9e9e9e;
+    border: 1px solid #2a2a2a;
+    cursor: pointer;
+    font-weight: 500;
+    font-family: 'Kanit', sans-serif;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-modal-cancel:hover {
+    background-color: #242424;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+.btn-modal-action {
+    flex: 1;
+    padding: 0.8rem;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 500;
+    font-family: 'Kanit', sans-serif;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+}
+
+/* Padrão Vermelho (Igual ao .logout-btn) */
+.btn-modal-action.danger {
+    background-color: rgba(255, 85, 85, 0.08);
+    color: #ff5555;
+    border: 1px solid rgba(255, 85, 85, 0.3);
+}
+
+.btn-modal-action.danger:hover {
+    background-color: rgba(255, 85, 85, 0.15);
+    border-color: rgba(255, 85, 85, 0.6);
+    transform: translateY(-2px);
+}
+
+/* Padrão Verde (Igual ao .btn-submit) */
+.btn-modal-action.success {
+    background-color: rgba(35, 126, 76, 0.08);
+    color: #237e4c;
+    border: 1px solid rgba(35, 126, 76, 0.3);
+}
+
+.btn-modal-action.success:hover {
+    background-color: rgba(35, 126, 76, 0.15);
+    border-color: rgba(35, 126, 76, 0.6);
+    transform: translateY(-2px);
+}
+
+/* Padrão Azul (Informativo) */
+.btn-modal-action.info {
+    background-color: rgba(59, 130, 246, 0.08);
+    color: #3b82f6;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.btn-modal-action.info:hover {
+    background-color: rgba(59, 130, 246, 0.15);
+    border-color: rgba(59, 130, 246, 0.6);
+    transform: translateY(-2px);
+}
+
+@keyframes fadeInModal {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUpModal {
+    from {
+        transform: translateY(20px) scale(0.95);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+/* =======================================================
+   Overlay de Carregamento Global
+======================================================= */
+
+.transicao-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 15, 15, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    z-index: 99999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease-in-out;
+}
+
+/* Força a visibilidade imediata ao iniciar */
+.transicao-overlay.ativa {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* Spinner Animado */
+.transicao-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--cor-primaria, #237e4c);
+    /* Usa a cor do seu tema */
+    border-radius: 50%;
+    animation: rodarSpinner 1s linear infinite;
+}
+
+.transicao-texto {
+    color: #e0e0e0;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+@keyframes rodarSpinner {
+    to {
+        transform: rotate(360deg);
+    }
+}

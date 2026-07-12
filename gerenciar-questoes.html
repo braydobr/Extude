@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="view-transition" content="same-origin">
+    <title>Extude - Gerenciar Questões</title>
+
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="/css/estilo-global.css">
+    
+    <style>
+        /* Estilo para quando a lista estiver carregando ou vazia */
+        .estado-lista {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: #666;
+            font-size: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    </style>
+</head>
+
+<body class="layout-app">
+
+    <div id="toast-notification" class="toast hidden">
+        <i id="toast-icon" class="ph"></i>
+        <span id="toast-message"></span>
+    </div>
+
+    <div class="app-container">
+
+        <header class="header-central has-actions">
+            <a href="painel-admin.html" class="btn-square-action"><i class="ph ph-caret-left"></i></a>
+            <h1 class="logo logo-sm"><span class="ex">EX</span><span class="tude">TUDE</span></h1>
+            <a href="cadastrar-questao.html" class="btn-square-action" style="color: #237e4c;">
+                <i class="ph ph-plus-circle"></i>
+            </a>
+        </header>
+
+        <div class="user-info" style="margin-top: 1.5rem;">
+            <h2 class="user-name">Banco de Questões</h2>
+            <p class="user-email">Gerencie o acervo de perguntas e simulados</p>
+        </div>
+
+        <div class="input-group-card" style="margin-bottom: 1rem;">
+            <div class="field">
+                <i class="ph ph-magnifying-glass"></i>
+                <input type="text" id="search-questao" placeholder="Buscar por ID, assunto ou enunciado..."
+                    oninput="filtrarTudo()">
+            </div>
+        </div>
+
+        <div class="filter-container" id="filtros-disciplina">
+            <button class="btn-filter active" data-value="Todas" onclick="toggleFiltro('Todas')">Todas</button>
+            <button class="btn-filter" data-value="Português" onclick="toggleFiltro('Português')">Português</button>
+            <button class="btn-filter" data-value="Matemática" onclick="toggleFiltro('Matemática')">Matemática</button>
+            <button class="btn-filter" data-value="História" onclick="toggleFiltro('História')">História</button>
+            <button class="btn-filter" data-value="Geografia" onclick="toggleFiltro('Geografia')">Geografia</button>
+            <button class="btn-filter" data-value="Inglês" onclick="toggleFiltro('Inglês')">Inglês</button>
+        </div>
+
+        <div class="profile-menu" id="lista-questoes">
+            <div id="loading-mensagem" class="estado-lista">
+                <i class="ph ph-spinner ph-spin" style="font-size: 1.5rem;"></i>
+                Buscando questões...
+            </div>
+        </div>
+        
+        <div id="mensagem-vazia" class="estado-lista" style="display: none;">
+            <i class="ph ph-magnifying-glass" style="font-size: 1.5rem;"></i>
+            Nenhuma questão encontrada com esses filtros.
+        </div>
+
+    </div>
+
+    <script src="/js/script-global.js"></script>
+    <script>
+        let filtrosAtivos = new Set(['Todas']);
+        let todasAsQuestoes = []; // Guarda os dados originais da API
+
+        // Busca as questões assim que a página abre
+        document.addEventListener('DOMContentLoaded', carregarQuestoes);
+
+        async function carregarQuestoes() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert("Sessão expirada. Faça login novamente.");
+                window.location.href = "/login.html";
+                return;
+            }
+
+            try {
+                const response = await fetch('/questoes/listar', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    todasAsQuestoes = await response.json();
+                    renderizarQuestoes(todasAsQuestoes);
+                } else {
+                    console.error("Erro ao buscar questões.");
+                    document.getElementById('loading-mensagem').innerHTML = 'Erro ao carregar as questões.';
+                }
+            } catch (error) {
+                console.error("Erro de conexão:", error);
+                document.getElementById('loading-mensagem').innerHTML = 'Falha de conexão com o servidor.';
+            }
+        }
+
+        // Desenha o HTML das questões na tela
+        function renderizarQuestoes(questoes) {
+            const container = document.getElementById('lista-questoes');
+            container.innerHTML = ''; // Limpa o "Buscando questões..."
+
+            if (questoes.length === 0) {
+                document.getElementById('mensagem-vazia').style.display = 'flex';
+                document.getElementById('mensagem-vazia').innerHTML = "O banco de questões está vazio.";
+                return;
+            }
+
+            questoes.forEach(questao => {
+                const linkEditar = `editar-questao.html?id=${questao.questao_id}`; // Passa o ID na URL
+                
+                const card = document.createElement('a');
+                card.href = linkEditar;
+                card.className = 'questao-card';
+                card.setAttribute('data-disciplina', questao.disciplina);
+
+                card.innerHTML = `
+                    <div class="questao-info">
+                        <span style="font-weight: 500; line-height: 1.2; font-size: 0.95rem;">${questao.assunto}</span>
+                        <span style="font-size: 0.75rem; color: #a0a0a0;">ID: #${questao.questao_id} • ${questao.disciplina}</span>
+                        <p style="font-size: 0.8rem; color: #666; margin-top: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                            ${questao.enunciado}
+                        </p>
+                    </div>
+                    <div class="menu-item-right"><i class="ph ph-caret-right" style="color: #333;"></i></div>
+                `;
+                
+                container.appendChild(card);
+            });
+
+            // Aplica os filtros caso já tenha algo digitado/marcado
+            filtrarTudo();
+        }
+
+        function toggleFiltro(valor) {
+            const botoes = document.querySelectorAll('.btn-filter');
+
+            if (valor === 'Todas') {
+                filtrosAtivos.clear();
+                filtrosAtivos.add('Todas');
+            } else {
+                filtrosAtivos.delete('Todas');
+                if (filtrosAtivos.has(valor)) {
+                    filtrosAtivos.delete(valor);
+                } else {
+                    filtrosAtivos.add(valor);
+                }
+
+                if (filtrosAtivos.size === 0 || filtrosAtivos.size === 5) {
+                    filtrosAtivos.clear();
+                    filtrosAtivos.add('Todas');
+                }
+            }
+
+            botoes.forEach(btn => {
+                const val = btn.getAttribute('data-value');
+                btn.classList.toggle('active', filtrosAtivos.has(val));
+            });
+
+            filtrarTudo();
+        }
+
+        function filtrarTudo() {
+            const termo = document.getElementById('search-questao').value.toLowerCase();
+            const cards = document.querySelectorAll('.questao-card');
+            const mensagemVazia = document.getElementById('mensagem-vazia');
+            let encontrados = 0;
+
+            cards.forEach(card => {
+                const texto = card.innerText.toLowerCase();
+                const disciplinaCard = card.getAttribute('data-disciplina');
+
+                const matchesBusca = texto.includes(termo);
+                const matchesFiltro = filtrosAtivos.has('Todas') || filtrosAtivos.has(disciplinaCard);
+
+                if (matchesBusca && matchesFiltro) {
+                    card.style.display = 'flex';
+                    encontrados++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Mostra o aviso se a busca não retornar nada
+            if (encontrados === 0 && todasAsQuestoes.length > 0) {
+                mensagemVazia.style.display = 'flex';
+                mensagemVazia.innerHTML = '<i class="ph ph-magnifying-glass" style="font-size: 1.5rem;"></i> Nenhuma questão encontrada com esses filtros.';
+            } else {
+                mensagemVazia.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="view-transition" content="same-origin">
+
+    <title>Extude - Editar Cadastro</title>
+
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="/css/estilo-global.css">
+
+    <script>
+        if (!localStorage.getItem('token')) window.location.href = "login.html";
+    </script>
+</head>
+
+<body class="layout-app edicao-layout">
+
+    <div id="toast-notification" class="toast hidden">
+        <i id="toast-icon" class="ph"></i>
+        <span id="toast-message"></span>
+    </div>
+
+    <div class="app-container">
+
+        <header class="header-central has-actions">
+            <a href="javascript:history.back()" class="btn-square-action"><i class="ph ph-caret-left"></i></a>
+            <h1 class="titulo-pagina">Editar Perfil</h1>
+            <div class="btn-square-action" style="visibility: hidden;"></div>
+        </header>
+
+        <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 2rem; margin-top: 1rem;">
+            <div class="avatar-iniciais avatar-lg" id="avatar-preview">
+                <i class="ph ph-spinner ph-spin"></i>
+            </div>
+            <p style="color: #a0a0a0; font-size: 0.9rem; margin-top: 0.8rem;">Seus dados básicos</p>
+        </div>
+
+        <form id="form-editar-perfil" onsubmit="salvarPerfil(event)">
+
+            <h3 class="menu-section-title">Informações Pessoais</h3>
+            <div class="input-group-card">
+                <div class="field">
+                    <i class="ph ph-user"></i>
+                    <input type="text" id="edit-nome" placeholder="Nome Completo" required>
+                </div>
+                <div class="field">
+                    <i class="ph ph-envelope"></i>
+                    <input type="email" id="edit-email" placeholder="E-mail principal" required>
+                </div>
+            </div>
+
+            <button type="submit" id="btn-salvar" class="btn-submit" style="margin-bottom: 3rem;">
+                <i class="ph ph-floppy-disk" style="font-size: 1.3rem; margin-right: 8px;"></i> Salvar Alterações
+            </button>
+        </form>
+    </div>
+
+    <script src="/js/script-global.js?v=2"></script>
+    <script src="/js/editar-cadastro-usuario.js?v=1"></script>
+</body>
+
+</html>

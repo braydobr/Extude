@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="view-transition" content="same-origin">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crie sua conta</title>
+
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <link rel="stylesheet" href="/css/estilo-global.css">
+</head>
+
+<body class="layout-auth">
+
+    <div class="login-container">
+
+        <header class="header-auth">
+            <h1 class="logo"><span class="ex">EX</span><span class="tude">TUDE</span></h1>
+            <p class="subtitle">Vamos criar sua conta</p>
+        </header>
+
+        <form id="form-cadastro">
+
+            <div class="input-group-card">
+
+                <div class="field">
+                    <i class="ph ph-user"></i>
+                    <input type="text" placeholder="Primeiro e último nome" id="nome" name="nome" required
+                        autocomplete="off">
+                </div>
+
+                <div class="field">
+                    <i class="ph ph-identification-card"></i>
+                    <input type="text" placeholder="CPF" id="cpf" name="cpf" required autocomplete="off">
+                </div>
+
+                <div class="field">
+                    <i class="ph ph-envelope"></i>
+                    <input type="email" placeholder="E-mail" id="email" name="email" required autocomplete="off">
+                </div>
+
+                <div class="field">
+                    <i class="ph ph-key"></i>
+                    <input type="password" placeholder="Crie uma senha" id="senha" name="senha" required>
+                </div>
+
+            </div>
+
+            <div style="margin-top: 0.5rem; margin-bottom: 1.5rem; padding: 0 0.5rem;">
+                <label class="custom-checkbox-container">
+                    <input type="checkbox" id="termos" name="termos">
+                    <span class="custom-checkmark"></span>
+                    <span class="terms-text">Concordo com os <a class="link-padrao" href="termos-de-uso.html">Termos de
+                            Uso</a>.</span>
+                </label>
+            </div>
+            <br><br>
+            <button type="submit" class="btn-submit">Criar Conta</button>
+        </form>
+
+        <div class="create-account">
+            Já tem uma conta? <a href="login.html">Fazer login</a>
+        </div>
+
+    </div>
+
+    <script src="/js/valida-cpf.js"></script>
+    <script src="/js/script-global.js"></script>
+    <script src="/js/cadastrar.js"></script>
+
+</body>
+
+</html>

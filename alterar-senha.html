@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="view-transition" content="same-origin">
+
+    <title>Extude - Alterar Senha</title>
+
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="/css/estilo-global.css">
+
+    <script>
+        // Trava de segurança: Se não tiver token, expulsa para o login
+        if (!localStorage.getItem('token')) window.location.href = "login.html";
+    </script>
+</head>
+
+<body class="layout-app edicao-layout">
+
+    <div id="toast-notification" class="toast hidden">
+        <i id="toast-icon" class="ph"></i>
+        <span id="toast-message"></span>
+    </div>
+
+    <div class="app-container">
+
+        <header class="header-central has-actions">
+            <a href="javascript:history.back()" class="btn-square-action"><i class="ph ph-caret-left"></i></a>
+            <h1 class="titulo-pagina">Alterar Senha</h1>
+            <div class="btn-square-action" style="visibility: hidden;"></div>
+        </header>
+
+        <div class="user-info" style="margin-top: 1rem; margin-bottom: 2rem; text-align: center;">
+            <div class="avatar-iniciais avatar-md" style="margin: 0 auto 0.8rem auto; background-color: rgba(35, 126, 76, 0.1);">
+                <i class="ph ph-lock-key" style="color: #237e4c;"></i>
+            </div>
+            <h2 class="user-name" style="font-size: 1.1rem;">Segurança da Conta</h2>
+            <p class="user-email">Crie uma nova senha forte para proteger seu acesso.</p>
+        </div>
+
+        <form id="form-alterar-senha" onsubmit="salvarNovaSenha(event)">
+            
+            <h3 class="menu-section-title">Nova Credencial</h3>
+            <div class="input-group-card">
+                <div class="field">
+                    <i class="ph ph-lock-key-open"></i>
+                    <input type="password" id="input-nova-senha" placeholder="Digite a nova senha" required minlength="6">
+                </div>
+                <div class="field">
+                    <i class="ph ph-lock-key"></i>
+                    <input type="password" id="input-confirmar-senha" placeholder="Confirme a nova senha" required minlength="6">
+                </div>
+            </div>
+
+            <button type="submit" id="btn-salvar-senha" class="btn-submit" style="margin-bottom: 3rem;">
+                <i class="ph ph-floppy-disk" style="font-size: 1.3rem; margin-right: 8px;"></i> Atualizar Senha
+            </button>
+        </form>
+
+    </div>
+
+    <script src="/js/script-global.js?v=2"></script>
+    <script src="/js/alterar-senha.js?v=1"></script>
+</body>
+</html>

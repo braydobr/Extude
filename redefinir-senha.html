@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="view-transition" content="same-origin">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="view-transition" content="same-origin">
+    <title>Recuperar Senha</title>
+
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="/css/estilo-global.css">
+</head>
+
+<body class="layout-auth">
+
+    <div id="toast-notification" class="toast hidden">
+        <i id="toast-icon" class="ph"></i>
+        <span id="toast-message"></span>
+    </div>
+
+    <div class="login-container">
+
+        <div class="header-auth">
+            <h1 class="logo"><span class="ex">EX</span><span class="tude">TUDE</span></h1>
+            <p class="subtitle" id="dynamic-subtitle">Para recuperar o acesso,<br>identifique sua conta</p>
+        </div>
+
+        <div id="step-1" class="step">
+            <div class="input-group-card">
+                <div class="field">
+                    <i class="ph ph-user"></i>
+                    <input type="text" placeholder="CPF" id="cpf" name="cpf" required autocomplete="off">
+                </div>
+            </div>
+            <button class="btn-submit" id="btn-buscar" onclick="buscarConta()" style="margin-top: 1rem;">
+                Buscar Conta
+            </button>
+        </div>
+
+        <div id="step-2" class="step hidden">
+
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <div class="avatar-iniciais avatar-md"
+                    style="margin: 0 auto 0.8rem auto; background-color: rgba(35, 126, 76, 0.1);">
+                    <i class="ph ph-user-check" style="color: #237e4c;"></i>
+                </div>
+                <p style="color: #a0a0a0; font-size: 0.9rem;">Conta localizada com o e-mail:</p>
+                <p id="email-mascarado" style="color: #ffffff; font-weight: 500; font-size: 1.05rem;"></p>
+            </div>
+
+            <div class="input-group-card">
+                <div class="field">
+                    <i class="ph ph-lock-key-open"></i>
+                    <input type="password" placeholder="Criar nova senha" id="new-senha">
+                </div>
+                <div class="field">
+                    <i class="ph ph-lock-key"></i>
+                    <input type="password" placeholder="Confirmar nova senha" id="confirm-senha">
+                </div>
+            </div>
+
+            <button class="btn-submit" id="btn-salvar" onclick="salvarNovaSenha()" style="margin-top: 1rem;">
+                Salvar Senha
+            </button>
+        </div>
+    </div>
+
+    <script src="/js/valida-cpf.js"></script>
+    <script src="/js/script-global.js"></script>
+    <script src="/js/redefinir-senha.js"></script>
+</body>
+
+</html>

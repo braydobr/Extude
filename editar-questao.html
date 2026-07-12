@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="view-transition" content="same-origin">
+    <title>Extude - Editar Questão</title>
+
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="/css/estilo-global.css">
+</head>
+
+<body class="layout-app edicao-layout">
+
+    <div id="toast-notification" class="toast hidden">
+        <i id="toast-icon" class="ph"></i>
+        <span id="toast-message"></span>
+    </div>
+
+    <div class="app-container">
+
+        <header class="header-central has-actions">
+            <a href="javascript:history.back()" class="btn-square-action"><i class="ph ph-caret-left"></i></a>
+            <h1 class="logo logo-sm"><span class="ex">EX</span><span class="tude">TUDE</span></h1>
+            <button type="button" class="btn-square-action" onclick="excluirQuestao()" style="color: #ff4d4d;">
+                <i class="ph ph-trash"></i>
+            </button>
+        </header>
+
+        <div class="user-info" style="margin-top: 1.5rem;">
+            <h2 class="user-name">Editar Questão</h2>
+            <p class="user-email">Modifique os dados abaixo e salve as alterações.</p>
+        </div>
+
+        <form id="form-editar-questao" onsubmit="salvarQuestao(event)">
+
+            <h3 class="menu-section-title">Classificação</h3>
+            <div class="input-group-card">
+
+                <div class="accordion-item" id="acc-disciplina">
+                    <div class="accordion-header" onclick="toggleAccordion('acc-disciplina')">
+                        <div class="header-left">
+                            <i class="ph ph-books"></i>
+                            <span id="selected-disciplina">Carregando...</span>
+                        </div>
+                        <i class="ph ph-caret-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <ul>
+                            <li onclick="selecionarItem('disciplina', 'Português')">Português</li>
+                            <li onclick="selecionarItem('disciplina', 'Matemática')">Matemática</li>
+                            <li onclick="selecionarItem('disciplina', 'História')">História</li>
+                            <li onclick="selecionarItem('disciplina', 'Geografia')">Geografia</li>
+                            <li onclick="selecionarItem('disciplina', 'Inglês')">Inglês</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="accordion-item" id="acc-assunto">
+                    <div class="accordion-header" onclick="toggleAccordion('acc-assunto')">
+                        <div class="header-left">
+                            <i class="ph ph-bookmark-simple"></i>
+                            <span id="selected-assunto">Carregando...</span>
+                        </div>
+                        <i class="ph ph-caret-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <ul id="lista-assuntos">
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="accordion-item" id="acc-resposta">
+                    <div class="accordion-header" onclick="toggleAccordion('acc-resposta')">
+                        <div class="header-left">
+                            <i class="ph ph-check-circle"></i>
+                            <span id="selected-resposta">Carregando...</span>
+                        </div>
+                        <i class="ph ph-caret-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <ul>
+                            <li onclick="selecionarItem('resposta', 'A')">Alternativa A</li>
+                            <li onclick="selecionarItem('resposta', 'B')">Alternativa B</li>
+                            <li onclick="selecionarItem('resposta', 'C')">Alternativa C</li>
+                            <li onclick="selecionarItem('resposta', 'D')">Alternativa D</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <input type="hidden" id="disciplina_final" name="disciplina" value="" required>
+                <input type="hidden" id="assunto_final" name="assunto" value="" required>
+                <input type="hidden" id="resposta_final" name="resposta" value="" required>
+
+            </div>
+
+            <h3 class="menu-section-title">Enunciado</h3>
+            <div class="input-group-card">
+                <div class="field align-top">
+                    <i class="ph ph-text-align-left"></i>
+                    <textarea id="enunciado" style="min-height: 120px;" required
+                        placeholder="Carregando enunciado..."></textarea>
+                </div>
+            </div>
+
+            <h3 class="menu-section-title">Alternativas</h3>
+            <div class="input-group-card">
+                <div class="field align-top">
+                    <i class="ph ph-letter-a"></i>
+                    <textarea id="alt-a" required placeholder="Alternativa A"></textarea>
+                </div>
+                <div class="field align-top">
+                    <i class="ph ph-letter-b"></i>
+                    <textarea id="alt-b" required placeholder="Alternativa B"></textarea>
+                </div>
+                <div class="field align-top">
+                    <i class="ph ph-letter-c"></i>
+                    <textarea id="alt-c" required placeholder="Alternativa C"></textarea>
+                </div>
+                <div class="field align-top">
+                    <i class="ph ph-letter-d"></i>
+                    <textarea id="alt-d" required placeholder="Alternativa D"></textarea>
+                </div>
+            </div>
+
+            <h3 class="menu-section-title">Resolução</h3>
+            <div class="input-group-card">
+                <div class="field align-top">
+                    <i class="ph ph-lightbulb"></i>
+                    <textarea id="explicacao" style="min-height: 100px;" required
+                        placeholder="Explicação da resposta..."></textarea>
+                </div>
+            </div>
+
+            <div class="btn-fixed-bottom">
+                <button type="submit" class="btn-submit">
+                    <i class="ph ph-floppy-disk"></i>Salvar Alterações
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+    <script src="/js/script-global.js"></script>
+    <script>
+        const gradeCurricular = {
+            "Português": ["Morfologia (Classes de palavras)", "Sintaxe (Período simples e composto)", "Concordância e Regência (Verbal e Nominal)", "Crase", "Figuras de Linguagem", "Acentuação e Ortografia"],
+            "Matemática": ["Funções (1º e 2º graus, Logarítmica e Exponencial)", "Geometria Espacial (Prismas, Cilindros e Cones)", "Geometria Plana (Áreas e Triângulos)", "Análise Combinatória e Probabilidade", "Progressões (PA e PG)", "Trigonometria (Círculo trigonométrico e Relações)"],
+            "História": ["Segundo Reinado (Economia, Guerras e Crise)", "Era Vargas (Estado Novo e Trabalhismo)", "Brasil Colônia (Economia e Expansão Territorial)", "República Velha (Coronelismo e Revoltas)", "Regime Militar"],
+            "Geografia": ["Climas e Domínios Morfoclimáticos", "Dinâmica Populacional e Migrações", "Espaço Agrário (Modernização e Fronteira Agrícola)", "Industrialização e Fontes de Energia", "Urbanização e Problemas Ambientais"],
+            "Inglês": ["Interpretação de Textos", "Tempos Verbais (Present, Past e Future)", "Pronomes (Pessoais e Possessivos)", "Conjunções e Advérbios"]
+        };
+
+        // Captura o ID da questão na URL (?id=123)
+        const urlParams = new URLSearchParams(window.location.search);
+        const questaoId = urlParams.get('id');
+
+        window.onload = async () => {
+            if (!questaoId) {
+                mostrarModalAlerta("Aviso", "Nenhuma questão foi selecionada para edição.", "info", () => {
+                    window.location.href = "gerenciar-questoes.html";
+                });
+                return;
+            }
+            await buscarQuestaoNaAPI(questaoId);
+        };
+
+        async function buscarQuestaoNaAPI(id) {
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch(`/questoes/${id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'ngrok-skip-browser-warning': 'true'
+                    }
+                });
+
+                if (response.ok) {
+                    const questao = await response.json();
+                    preencherFormulario(questao);
+                } else {
+                    mostrarModalAlerta("Erro", "Erro ao buscar a questão no servidor.", "danger", () => {
+                        window.location.href = "gerenciar-questoes.html";
+                    });
+                }
+            } catch (error) {
+                console.error("Erro na conexão:", error);
+                mostrarAlerta("Falha de conexão com o servidor.", "error");
+            }
+        }
+
+        function preencherFormulario(questao) {
+            selecionarItem('disciplina', questao.disciplina);
+            selecionarItem('assunto', questao.assunto);
+            selecionarItem('resposta', questao.resposta);
+
+            document.getElementById('enunciado').value = questao.enunciado;
+            document.getElementById('alt-a').value = questao.alternativa_a;
+            document.getElementById('alt-b').value = questao.alternativa_b;
+            document.getElementById('alt-c').value = questao.alternativa_c;
+            document.getElementById('alt-d').value = questao.alternativa_d;
+            document.getElementById('explicacao').value = questao.explicacao;
+        }
+
+        function toggleAccordion(id) {
+            const item = document.getElementById(id);
+            const isActive = item.classList.contains('active');
+            document.querySelectorAll('.accordion-item').forEach(acc => acc.classList.remove('active'));
+            if (!isActive) item.classList.add('active');
+        }
+
+        function selecionarItem(tipo, valor) {
+            if (tipo === 'disciplina') {
+                document.getElementById('selected-disciplina').innerText = valor;
+                document.getElementById('disciplina_final').value = valor;
+                document.getElementById('selected-assunto').innerText = "Selecione o assunto";
+                document.getElementById('assunto_final').value = "";
+                atualizarAssuntosHTML(valor);
+                const itemAcc = document.getElementById('acc-disciplina');
+                if (itemAcc.classList.contains('active')) toggleAccordion('acc-disciplina');
+            }
+            else if (tipo === 'assunto') {
+                document.getElementById('selected-assunto').innerText = valor;
+                document.getElementById('assunto_final').value = valor;
+                const itemAcc = document.getElementById('acc-assunto');
+                if (itemAcc.classList.contains('active')) toggleAccordion('acc-assunto');
+            }
+            else if (tipo === 'resposta') {
+                document.getElementById('selected-resposta').innerText = "Alternativa " + valor;
+                document.getElementById('resposta_final').value = valor;
+                const itemAcc = document.getElementById('acc-resposta');
+                if (itemAcc.classList.contains('active')) toggleAccordion('acc-resposta');
+            }
+        }
+
+        function atualizarAssuntosHTML(disciplina) {
+            const lista = document.getElementById('lista-assuntos');
+            lista.innerHTML = "";
+            if (gradeCurricular[disciplina]) {
+                gradeCurricular[disciplina].forEach(assunto => {
+                    const li = document.createElement('li');
+                    li.innerText = assunto;
+                    li.onclick = () => selecionarItem('assunto', assunto);
+                    lista.appendChild(li);
+                });
+            }
+        }
+
+        async function salvarQuestao(event) {
+            event.preventDefault();
+            const token = localStorage.getItem('token');
+
+            const dadosAtualizados = {
+                disciplina: document.getElementById('disciplina_final').value,
+                assunto: document.getElementById('assunto_final').value,
+                enunciado: document.getElementById('enunciado').value,
+                resposta: document.getElementById('resposta_final').value,
+                alternativa_a: document.getElementById('alt-a').value,
+                alternativa_b: document.getElementById('alt-b').value,
+                alternativa_c: document.getElementById('alt-c').value,
+                alternativa_d: document.getElementById('alt-d').value,
+                explicacao: document.getElementById('explicacao').value
+            };
+
+            try {
+                const response = await fetch(`/admin/questoes/${questaoId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                        'ngrok-skip-browser-warning': 'true'
+                    }
+                });
+
+                if (response.ok) {
+                    mostrarAlerta("Alterações salvas com sucesso!", "success");
+                    setTimeout(() => {
+                        window.location.href = "gerenciar-questoes.html";
+                    }, 1500);
+                } else {
+                    mostrarModalAlerta("Erro", "Erro ao salvar alterações no banco de dados.", "danger");
+                }
+            } catch (error) {
+                console.error("Erro ao salvar:", error);
+                mostrarAlerta("Falha de conexão com o servidor.", "error");
+            }
+        }
+
+        async function excluirQuestao() {
+            // Substituído o confirm() nativo pelo modal customizado
+            mostrarModalConfirmacao(
+                "Excluir Questão",
+                "Deseja excluir esta questão permanentemente? Esta ação não pode ser desfeita.",
+                "Sim, excluir",
+                "danger",
+                async () => {
+                    const token = localStorage.getItem('token');
+                    try {
+                        const response = await fetch(`/admin/questoes/${questaoId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'ngrok-skip-browser-warning': 'true'
+                            }
+                        });
+
+                        if (response.ok) {
+                            mostrarAlerta("Questão excluída com sucesso!", "success");
+                            setTimeout(() => {
+                                window.location.href = "gerenciar-questoes.html";
+                            }, 1500);
+                        } else {
+                            mostrarModalAlerta("Erro", "Erro ao tentar excluir a questão.", "danger");
+                        }
+                    } catch (error) {
+                        console.error("Erro ao excluir:", error);
+                        mostrarAlerta("Falha de conexão com o servidor.", "error");
+                    }
+                }
+            );
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="view-transition" content="same-origin">
+    <title>Extude - Escolher Estudo</title>
+
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="/css/estilo-global.css">
+
+    <script>
+        // Proteção de rota
+        if (!localStorage.getItem('token')) {
+            window.location.href = "login.html";
+        }
+    </script>
+</head>
+
+<body class="layout-app">
+
+    <div id="toast-notification" class="toast hidden">
+        <i id="toast-icon" class="ph"></i>
+        <span id="toast-message"></span>
+    </div>
+
+    <div class="app-container">
+
+        <header class="header-central has-actions">
+            <a href="painel-usuario.html" class="btn-square-action"><i class="ph ph-caret-left"></i></a>
+            <h1 class="logo logo-sm"><span class="ex">EX</span><span class="tude">TUDE</span></h1>
+            <div class="btn-square-action" style="visibility: hidden;"></div> 
+        </header>
+
+        <div class="user-info" style="margin-top: 1.5rem; margin-bottom: 2rem;">
+            <h2 class="user-name">O que vamos estudar?</h2>
+            <p class="user-email">Escolha um tema para focar ou encare um simulado geral.</p>
+        </div>
+
+        <button class="btn-submit" onclick="iniciarQuiz('aleatorio')" style="margin-bottom: 2.5rem; padding: 1.2rem;">
+            <i class="ph ph-shuffle" style="font-size: 1.3rem; margin-right: 0.5rem;"></i>
+            Simulado Aleatório
+        </button>
+
+        <h3 class="menu-section-title">Treinar por Disciplina</h3>
+        
+        <div class="profile-menu">
+
+            <a href="javascript:void(0)" class="questao-card" onclick="iniciarQuiz('Português')">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div class="avatar-iniciais">
+                        <i class="ph ph-book-open-text" style="font-size: 1.4rem;"></i>
+                    </div>
+                    <div class="questao-info">
+                        <span style="font-weight: 500; font-size: 1rem; color: #fff;">Português</span>
+                        <span style="font-size: 0.8rem; color: #a0a0a0;">Gramática e Interpretação</span>
+                    </div>
+                </div>
+                <div class="menu-item-right"><i class="ph ph-caret-right" style="color: #666;"></i></div>
+            </a>
+
+            <a href="javascript:void(0)" class="questao-card" onclick="iniciarQuiz('Matemática')">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div class="avatar-iniciais">
+                        <i class="ph ph-calculator" style="font-size: 1.4rem;"></i>
+                    </div>
+                    <div class="questao-info">
+                        <span style="font-weight: 500; font-size: 1rem; color: #fff;">Matemática</span>
+                        <span style="font-size: 0.8rem; color: #a0a0a0;">Cálculos, Geometria e Lógica</span>
+                    </div>
+                </div>
+                <div class="menu-item-right"><i class="ph ph-caret-right" style="color: #666;"></i></div>
+            </a>
+
+            <a href="javascript:void(0)" class="questao-card" onclick="iniciarQuiz('História')">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div class="avatar-iniciais">
+                        <i class="ph ph-hourglass-medium" style="font-size: 1.4rem;"></i>
+                    </div>
+                    <div class="questao-info">
+                        <span style="font-weight: 500; font-size: 1rem; color: #fff;">História</span>
+                        <span style="font-size: 0.8rem; color: #a0a0a0;">Brasil Colônia, Império e República</span>
+                    </div>
+                </div>
+                <div class="menu-item-right"><i class="ph ph-caret-right" style="color: #666;"></i></div>
+            </a>
+
+            <a href="javascript:void(0)" class="questao-card" onclick="iniciarQuiz('Geografia')">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div class="avatar-iniciais">
+                        <i class="ph ph-globe-hemisphere-west" style="font-size: 1.4rem;"></i>
+                    </div>
+                    <div class="questao-info">
+                        <span style="font-weight: 500; font-size: 1rem; color: #fff;">Geografia</span>
+                        <span style="font-size: 0.8rem; color: #a0a0a0;">Clima, Relevo e Sociedade</span>
+                    </div>
+                </div>
+                <div class="menu-item-right"><i class="ph ph-caret-right" style="color: #666;"></i></div>
+            </a>
+
+            <a href="javascript:void(0)" class="questao-card" onclick="iniciarQuiz('Inglês')">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div class="avatar-iniciais">
+                        <i class="ph ph-translate" style="font-size: 1.4rem;"></i>
+                    </div>
+                    <div class="questao-info">
+                        <span style="font-weight: 500; font-size: 1rem; color: #fff;">Inglês</span>
+                        <span style="font-size: 0.8rem; color: #a0a0a0;">Vocabulário e Interpretação</span>
+                    </div>
+                </div>
+                <div class="menu-item-right"><i class="ph ph-caret-right" style="color: #666;"></i></div>
+            </a>
+
+        </div>
+    </div>
+
+    <script src="/js/script-global.js"></script>
+    <script>
+        // Função simples que envia o usuário para a tela de quiz passando a intenção pela URL
+        function iniciarQuiz(parametro) {
+            if (parametro === 'aleatorio') {
+                window.location.href = `quiz.html?modo=aleatorio`;
+            } else {
+                // Passa a disciplina escolhida via URL (ex: teste.html?disciplina=Matemática)
+                // O encodeURIComponent garante que acentos não quebrem a URL
+                window.location.href = `quiz.html?disciplina=${encodeURIComponent(parametro)}`;
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="view-transition" content="same-origin">
+    <title>Extude - Gerenciar Usuários</title>
+
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="/css/estilo-global.css">
+
+    <script>
+        // Verificação para garantir que apenas Admin acesse
+        if (!localStorage.getItem('token') || localStorage.getItem('nivelAcesso') !== '0') {
+            window.location.href = "../login.html";
+        }
+    </script>
+</head>
+
+<body class="layout-app">
+
+    <div id="toast-notification" class="toast hidden">
+        <i id="toast-icon" class="ph"></i>
+        <span id="toast-message"></span>
+    </div>
+
+    <div class="app-container">
+
+        <header class="header-central has-actions">
+            <a href="painel-admin.html" class="btn-square-action"><i class="ph ph-caret-left"></i></a>
+            <h1 class="logo logo-sm"><span class="ex">EX</span><span class="tude">TUDE</span></h1>
+            <div style="width: 40px;"></div>
+        </header>
+
+        <div class="user-info" style="margin-top: 1.5rem;">
+            <h2 class="user-name">Gerenciar Usuários</h2>
+            <p class="user-email">Controle de acesso e perfis da plataforma</p>
+        </div>
+
+        <div class="input-group-card" style="margin-bottom: 1rem;">
+            <div class="field">
+                <i class="ph ph-magnifying-glass"></i>
+                <input type="text" id="search-user" placeholder="Buscar por nome, e-mail ou CPF..."
+                    oninput="filtrarTudo()">
+            </div>
+        </div>
+
+        <div class="filter-container">
+            <button class="btn-filter active" data-value="Todas" onclick="toggleFiltro('Todas')">Todas</button>
+            <button class="btn-filter" data-value="Aluno" onclick="toggleFiltro('Aluno')">Alunos</button>
+            <button class="btn-filter" data-value="Admin" onclick="toggleFiltro('Admin')">Administradores</button>
+        </div>
+
+        <div class="profile-menu" id="lista-usuarios">
+
+            <p id="mensagem-carregando"
+                style="text-align: center; color: #a0a0a0; padding: 2rem 1rem; font-size: 0.9rem;">
+                <i class="ph ph-spinner ph-spin" style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i>
+                Buscando usuários...
+            </p>
+
+            <p id="mensagem-vazia"
+                style="display: none; text-align: center; color: #666; padding: 2rem 1rem; font-size: 0.9rem;">
+                Nenhum usuário encontrado
+            </p>
+
+        </div>
+    </div>
+
+    <script src="/js/script-global.js"></script>
+    <script>
+        let filtrosAtivos = new Set(['Todas']);
+
+        // Assim que a tela carregar, chama a API
+        document.addEventListener('DOMContentLoaded', carregarUsuarios);
+
+        // Função para extrair iniciais (Ex: João Silva -> JS)
+        function gerarIniciais(nome) {
+            if (!nome) return "U"; // Default caso venha vazio
+            const partes = nome.trim().split(" ");
+            if (partes.length >= 2) {
+                return (partes[0][0] + partes[1][0]).toUpperCase();
+            } else if (partes.length === 1) {
+                return partes[0].substring(0, 2).toUpperCase();
+            }
+            return "U";
+        }
+
+        async function carregarUsuarios() {
+            const token = localStorage.getItem('token');
+            const container = document.getElementById('lista-usuarios');
+            const msgCarregando = document.getElementById('mensagem-carregando');
+            const msgVazia = document.getElementById('mensagem-vazia');
+
+            try {
+                // CORREÇÃO: Adicionado o /admin na URL abaixo!
+                const resposta = await fetch('/admin/usuarios/listar', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!resposta.ok) {
+                    throw new Error("Falha ao buscar usuários do banco de dados.");
+                }
+
+                const usuarios = await resposta.json();
+
+                msgCarregando.style.display = 'none';
+
+                if (usuarios.length === 0) {
+                    msgVazia.style.display = 'block';
+                    return;
+                }
+
+                usuarios.forEach(user => {
+                    const cargoTexto = user.nivel === 0 ? "Admin" : "Aluno";
+                    const iniciais = gerarIniciais(user.nome);
+
+                    // Se o backend enviar o CPF, guardamos apenas os números para a busca
+                    const cpfLimpo = user.cpf ? user.cpf.replace(/\D/g, '') : "";
+
+                    const card = document.createElement('a');
+                    card.href = `editar-usuario.html?id=${user.id}`;
+                    card.className = 'menu-item questao-card';
+                    card.setAttribute('data-cargo', cargoTexto);
+                    card.setAttribute('data-cpf', cpfLimpo); // Injeta o CPF oculto
+
+                    // Novo Layout com Avatar (iniciais) global + Infos
+                    card.innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div class="avatar-iniciais">
+                                ${iniciais}
+                            </div>
+                            <div class="questao-info">
+                                <span style="font-weight: 500; line-height: 1.2; font-size: 0.95rem;">${user.nome}</span>
+                                <span style="font-size: 0.75rem; color: #a0a0a0;">${user.email} • ${cargoTexto}</span>
+                            </div>
+                        </div>
+                        <div class="menu-item-right"><i class="ph ph-caret-right" style="color: #333;"></i></div>
+                    `;
+
+                    container.insertBefore(card, msgVazia);
+                });
+
+                filtrarTudo();
+
+            } catch (erro) {
+                console.error(erro);
+                mostrarAlerta("Erro ao carregar lista de usuários.", "error");
+                msgCarregando.innerHTML = "Erro de conexão. Verifique se o servidor está rodando.";
+            }
+        }
+
+        function toggleFiltro(valor) {
+            const botoes = document.querySelectorAll('.btn-filter');
+
+            if (valor === 'Todas') {
+                filtrosAtivos.clear();
+                filtrosAtivos.add('Todas');
+            } else {
+                filtrosAtivos.delete('Todas');
+                if (filtrosAtivos.has(valor)) {
+                    filtrosAtivos.delete(valor);
+                } else {
+                    filtrosAtivos.add(valor);
+                }
+
+                if (filtrosAtivos.size === 0) {
+                    filtrosAtivos.add('Todas');
+                }
+            }
+
+            botoes.forEach(btn => {
+                const val = btn.getAttribute('data-value');
+                btn.classList.toggle('active', filtrosAtivos.has(val));
+            });
+
+            filtrarTudo();
+        }
+
+        function filtrarTudo() {
+            // Pega o termo digitado
+            const termo = document.getElementById('search-user').value.toLowerCase();
+            // Pega apenas os números do termo digitado (para facilitar a busca do CPF, caso o usuário digite com pontos)
+            const termoSomenteNumeros = termo.replace(/\D/g, '');
+
+            const cards = document.querySelectorAll('.questao-card');
+            const mensagemVazia = document.getElementById('mensagem-vazia');
+            let encontrados = 0;
+
+            cards.forEach(card => {
+                const texto = card.querySelector('.questao-info').innerText.toLowerCase();
+                const cargoCard = card.getAttribute('data-cargo');
+                const cpfCard = card.getAttribute('data-cpf'); // CPF oculto
+
+                // Bate a busca se: O termo está no nome/email OU se os números digitados batem com o CPF oculto
+                const matchesBusca = texto.includes(termo) || (termoSomenteNumeros !== '' && cpfCard.includes(termoSomenteNumeros));
+
+                const matchesFiltro = filtrosAtivos.has('Todas') || filtrosAtivos.has(cargoCard);
+
+                if (matchesBusca && matchesFiltro) {
+                    card.style.display = 'flex';
+                    encontrados++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            mensagemVazia.style.display = (encontrados === 0) ? 'block' : 'none';
+        }
+    </script>
+</body>
+
+</html>
